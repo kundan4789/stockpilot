@@ -32,7 +32,7 @@ async function query(q: string, timespan = "14d", max = 40, attempt = 0): Promis
   } catch (e) {
     // GDELT throttles shared cloud IPs: back off and retry (up to 3 times).
     if (/429/.test((e as Error).message)) consecutive429++;
-    if (consecutive429 >= 4) newsDeadline = 0; // GDELT is throttling this runner — stop asking this run
+    if (consecutive429 >= 6) newsDeadline = 0; // GDELT is throttling this runner — stop asking this run
     if (attempt < 1 && /429|fetch failed|abort/i.test((e as Error).message) && Date.now() < newsDeadline) {
       await new Promise((res) => setTimeout(res, 15_000));
       return query(q, timespan, max, attempt + 1);

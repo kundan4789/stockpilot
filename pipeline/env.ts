@@ -6,6 +6,7 @@ export const env = {
   geminiModel: e("GEMINI_MODEL") ?? "gemini-3.5-flash-lite",
   searchModel: e("GEMINI_SEARCH_MODEL"),
   fredKey: e("FRED_API_KEY"),
+  gnewsKey: e("GNEWS_API_KEY"),
   tejhqKey: e("TEJHQ_API_KEY"),
   tejhqBaseUrl: e("TEJHQ_BASE_URL"),
   dataDir: e("DATA_DIR") ?? "data",

@@ -10,6 +10,7 @@ export const SOURCE_POLICIES: Record<string, { minIntervalMs: number; maxPerRun:
   imf: { minIntervalMs: 1000, maxPerRun: 10 },
   gemini: { minIntervalMs: 6500, maxPerRun: 120 },
   tejhq: { minIntervalMs: 1000, maxPerRun: 100 },
+  gnews: { minIntervalMs: 1200, maxPerRun: 95 }, // free plan: 100 requests/day, 1 request/second
 };
 
 export class QuotaExceededError extends Error {
@@ -73,9 +74,10 @@ export async function fetchSource<T = unknown>(url: string, o: FetchOpts): Promi
         signal: ctrl.signal,
       });
       if (!res.ok) {
-        httpLog.push({ source: o.source, url: redact(url), status: res.status, ok: false, ms: Date.now() - t0, message: res.statusText, at: new Date().toISOString() });
-        if (res.status === 429 || res.status >= 500) throw new HttpError(res.status, url);
-        throw Object.assign(new HttpError(res.status, url), { fatal: true });
+        const bodyText = (await res.text().catch(() => "")).replace(/\s+/g, " ").slice(0, 300);
+        httpLog.push({ source: o.source, url: redact(url), status: res.status, ok: false, ms: Date.now() - t0, message: `${res.statusText} ${bodyText}`.trim(), at: new Date().toISOString() });
+        if (res.status === 429 || res.status >= 500) throw Object.assign(new HttpError(res.status, url), { message: `HTTP ${res.status} ${bodyText.slice(0, 160)}` });
+        throw Object.assign(new HttpError(res.status, url), { fatal: true, message: `HTTP ${res.status} ${bodyText.slice(0, 160)}` });
       }
       const data = (o.as === "text" ? await res.text() : o.as === "binary" ? await res.arrayBuffer() : await res.json()) as T;
       httpLog.push({ source: o.source, url: redact(url), status: res.status, ok: true, ms: Date.now() - t0, at: new Date().toISOString() });

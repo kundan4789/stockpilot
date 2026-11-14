@@ -13,6 +13,7 @@ import { env } from "./env";
 import { httpLog, usage } from "./http";
 import { feedStatus, fetchCorporateEvents, fetchIndicesClose, latestAvailable, NSE_URLS } from "./nse";
 import { fetchMarketNews, fetchUniverseNews, setNewsBudget } from "./gdelt";
+import { fetchGNews } from "./gnews";
 import { fetchFred, fetchImf, fetchWorldBank } from "./macro";
 import { fetchSensex } from "./bse";
 import { SECTOR_INDEX } from "./fundamentals";
@@ -106,6 +107,8 @@ async function main() {
   // 4b. News for the whole universe (batched, capped at 12 minutes; stored news is kept if GDELT throttles us)
   setNewsBudget(12 * 60_000);
   const newsMap = await fetchUniverseNews(universe, say);
+  const gnews = await fetchGNews(universe, say);
+  if (gnews) for (const [sym, items] of gnews) newsMap.set(sym, [...(newsMap.get(sym) ?? []), ...items]);
 
   // 5b. Per-stock research
   const ai = getAIProvider();
@@ -319,7 +322,15 @@ async function research(
   const a = finEff?.annual ?? [];
   const yrs = Math.min(3, a.length - 1);
   const valResult = scoreValuation(finEff, yrs >= 1 ? cagr(a[0]?.eps ?? null, a[yrs]?.eps ?? null, yrs) : null);
-  const instResult = scoreInstitutional(sh);
+  const shInst = scoreInstitutional(sh);
+  // Derivatives positioning (F&O build-up, PCR, option walls) is institutional-money evidence too.
+  const foInst = foView ? { name: "F&O positioning", score: Math.max(0, Math.min(100, 50 + foView.stanceScore / 2)), weight: 0.5, detail: `F&O stance ${foView.stance} (${foView.stanceScore >= 0 ? "+" : ""}${foView.stanceScore} on −100…+100): ${foView.reasons[0] ?? ""}` } : null;
+  const instResult = (() => {
+    if (!foInst) return shInst;
+    const parts = [...(shInst.score != null ? [{ s: shInst.score, w: 0.5 }] : []), { s: foInst.score, w: foInst.weight }];
+    const score = Math.round(parts.reduce((a, p) => a + p.s * p.w, 0) / parts.reduce((a, p) => a + p.w, 0));
+    return { score, coverage: shInst.score != null ? 1 : 0.6, subScores: [...shInst.subScores, foInst], explanation: [`Blend of ${shInst.score != null ? "shareholding changes and " : ""}F&O positioning.`, ...shInst.explanation.slice(1), `${foInst.name}: ${foInst.score.toFixed(0)} — ${foInst.detail}`] };
+  })();
   steps.push({ step: "Fundamental ratios", status: fundResult.score != null ? "ok" : "unavailable", detail: fundResult.explanation[0] });
   steps.push({ step: "Competitor comparison", status: peerRows.length ? "ok" : "unavailable", detail: peerRows.length ? `${peerRows.length} NIFTY 50 sector peers: ${peerRows.map((p) => p.symbol).join(", ")}` : "No same-sector peers in NIFTY 50" });
 
