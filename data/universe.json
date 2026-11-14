@@ -1,0 +1,502 @@
+[
+ {
+  "symbol": "ADANIENT",
+  "exchange": "NSE",
+  "name": "Adani Enterprises Ltd.",
+  "sector": "Metals & Mining",
+  "isin": "INE423A01024",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "ADANIPORTS",
+  "exchange": "NSE",
+  "name": "Adani Ports and Special Economic Zone Ltd.",
+  "sector": "Services",
+  "isin": "INE742F01042",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "APOLLOHOSP",
+  "exchange": "NSE",
+  "name": "Apollo Hospitals Enterprise Ltd.",
+  "sector": "Healthcare",
+  "isin": "INE437A01024",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "ASIANPAINT",
+  "exchange": "NSE",
+  "name": "Asian Paints Ltd.",
+  "sector": "Consumer Durables",
+  "isin": "INE021A01026",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "AXISBANK",
+  "exchange": "NSE",
+  "name": "Axis Bank Ltd.",
+  "sector": "Financial Services",
+  "isin": "INE238A01034",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "BSE",
+  "exchange": "NSE",
+  "name": "BSE Ltd.",
+  "sector": "Financial Services",
+  "isin": "INE118H01025",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "BAJAJ-AUTO",
+  "exchange": "NSE",
+  "name": "Bajaj Auto Ltd.",
+  "sector": "Automobile and Auto Components",
+  "isin": "INE917I01010",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "BAJFINANCE",
+  "exchange": "NSE",
+  "name": "Bajaj Finance Ltd.",
+  "sector": "Financial Services",
+  "isin": "INE296A01032",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "BAJAJFINSV",
+  "exchange": "NSE",
+  "name": "Bajaj Finserv Ltd.",
+  "sector": "Financial Services",
+  "isin": "INE918I01026",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "BEL",
+  "exchange": "NSE",
+  "name": "Bharat Electronics Ltd.",
+  "sector": "Capital Goods",
+  "isin": "INE263A01024",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "BHARTIARTL",
+  "exchange": "NSE",
+  "name": "Bharti Airtel Ltd.",
+  "sector": "Telecommunication",
+  "isin": "INE397D01024",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "CIPLA",
+  "exchange": "NSE",
+  "name": "Cipla Ltd.",
+  "sector": "Healthcare",
+  "isin": "INE059A01026",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "COALINDIA",
+  "exchange": "NSE",
+  "name": "Coal India Ltd.",
+  "sector": "Oil Gas & Consumable Fuels",
+  "isin": "INE522F01014",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "DRREDDY",
+  "exchange": "NSE",
+  "name": "Dr. Reddy's Laboratories Ltd.",
+  "sector": "Healthcare",
+  "isin": "INE089A01031",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "EICHERMOT",
+  "exchange": "NSE",
+  "name": "Eicher Motors Ltd.",
+  "sector": "Automobile and Auto Components",
+  "isin": "INE066A01021",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "ETERNAL",
+  "exchange": "NSE",
+  "name": "Eternal Ltd.",
+  "sector": "Consumer Services",
+  "isin": "INE758T01015",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "GRASIM",
+  "exchange": "NSE",
+  "name": "Grasim Industries Ltd.",
+  "sector": "Construction Materials",
+  "isin": "INE047A01021",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "HCLTECH",
+  "exchange": "NSE",
+  "name": "HCL Technologies Ltd.",
+  "sector": "Information Technology",
+  "isin": "INE860A01027",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "HDFCBANK",
+  "exchange": "NSE",
+  "name": "HDFC Bank Ltd.",
+  "sector": "Financial Services",
+  "isin": "INE040A01034",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "HDFCLIFE",
+  "exchange": "NSE",
+  "name": "HDFC Life Insurance Company Ltd.",
+  "sector": "Financial Services",
+  "isin": "INE795G01014",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "HINDALCO",
+  "exchange": "NSE",
+  "name": "Hindalco Industries Ltd.",
+  "sector": "Metals & Mining",
+  "isin": "INE038A01020",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "HINDUNILVR",
+  "exchange": "NSE",
+  "name": "Hindustan Unilever Ltd.",
+  "sector": "Fast Moving Consumer Goods",
+  "isin": "INE030A01027",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "ICICIBANK",
+  "exchange": "NSE",
+  "name": "ICICI Bank Ltd.",
+  "sector": "Financial Services",
+  "isin": "INE090A01021",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "ITC",
+  "exchange": "NSE",
+  "name": "ITC Ltd.",
+  "sector": "Fast Moving Consumer Goods",
+  "isin": "INE154A01025",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "INFY",
+  "exchange": "NSE",
+  "name": "Infosys Ltd.",
+  "sector": "Information Technology",
+  "isin": "INE009A01021",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "INDIGO",
+  "exchange": "NSE",
+  "name": "InterGlobe Aviation Ltd.",
+  "sector": "Services",
+  "isin": "INE646L01027",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "JSWSTEEL",
+  "exchange": "NSE",
+  "name": "JSW Steel Ltd.",
+  "sector": "Metals & Mining",
+  "isin": "INE019A01038",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "JIOFIN",
+  "exchange": "NSE",
+  "name": "Jio Financial Services Ltd.",
+  "sector": "Financial Services",
+  "isin": "INE758E01017",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "KOTAKBANK",
+  "exchange": "NSE",
+  "name": "Kotak Mahindra Bank Ltd.",
+  "sector": "Financial Services",
+  "isin": "INE237A01036",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "LT",
+  "exchange": "NSE",
+  "name": "Larsen & Toubro Ltd.",
+  "sector": "Construction",
+  "isin": "INE018A01030",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "M&M",
+  "exchange": "NSE",
+  "name": "Mahindra & Mahindra Ltd.",
+  "sector": "Automobile and Auto Components",
+  "isin": "INE101A01026",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "MARUTI",
+  "exchange": "NSE",
+  "name": "Maruti Suzuki India Ltd.",
+  "sector": "Automobile and Auto Components",
+  "isin": "INE585B01010",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "MAXHEALTH",
+  "exchange": "NSE",
+  "name": "Max Healthcare Institute Ltd.",
+  "sector": "Healthcare",
+  "isin": "INE027H01010",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "NTPC",
+  "exchange": "NSE",
+  "name": "NTPC Ltd.",
+  "sector": "Power",
+  "isin": "INE733E01010",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "NESTLEIND",
+  "exchange": "NSE",
+  "name": "Nestle India Ltd.",
+  "sector": "Fast Moving Consumer Goods",
+  "isin": "INE239A01024",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "ONGC",
+  "exchange": "NSE",
+  "name": "Oil & Natural Gas Corporation Ltd.",
+  "sector": "Oil Gas & Consumable Fuels",
+  "isin": "INE213A01029",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "POWERGRID",
+  "exchange": "NSE",
+  "name": "Power Grid Corporation of India Ltd.",
+  "sector": "Power",
+  "isin": "INE752E01010",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "RELIANCE",
+  "exchange": "NSE",
+  "name": "Reliance Industries Ltd.",
+  "sector": "Oil Gas & Consumable Fuels",
+  "isin": "INE002A01018",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "SBILIFE",
+  "exchange": "NSE",
+  "name": "SBI Life Insurance Company Ltd.",
+  "sector": "Financial Services",
+  "isin": "INE123W01016",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "SHRIRAMFIN",
+  "exchange": "NSE",
+  "name": "Shriram Finance Ltd.",
+  "sector": "Financial Services",
+  "isin": "INE721A01047",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "SBIN",
+  "exchange": "NSE",
+  "name": "State Bank of India",
+  "sector": "Financial Services",
+  "isin": "INE062A01020",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "SUNPHARMA",
+  "exchange": "NSE",
+  "name": "Sun Pharmaceutical Industries Ltd.",
+  "sector": "Healthcare",
+  "isin": "INE044A01036",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "TCS",
+  "exchange": "NSE",
+  "name": "Tata Consultancy Services Ltd.",
+  "sector": "Information Technology",
+  "isin": "INE467B01029",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "TATACONSUM",
+  "exchange": "NSE",
+  "name": "Tata Consumer Products Ltd.",
+  "sector": "Fast Moving Consumer Goods",
+  "isin": "INE192A01025",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "TMPV",
+  "exchange": "NSE",
+  "name": "Tata Motors Passenger Vehicles Ltd.",
+  "sector": "Automobile and Auto Components",
+  "isin": "INE155A01022",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "TATASTEEL",
+  "exchange": "NSE",
+  "name": "Tata Steel Ltd.",
+  "sector": "Metals & Mining",
+  "isin": "INE081A01020",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "TECHM",
+  "exchange": "NSE",
+  "name": "Tech Mahindra Ltd.",
+  "sector": "Information Technology",
+  "isin": "INE669C01036",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "TITAN",
+  "exchange": "NSE",
+  "name": "Titan Company Ltd.",
+  "sector": "Consumer Durables",
+  "isin": "INE280A01028",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "TRENT",
+  "exchange": "NSE",
+  "name": "Trent Ltd.",
+  "sector": "Consumer Services",
+  "isin": "INE849A01020",
+  "indices": [
+   "NIFTY 50"
+  ]
+ },
+ {
+  "symbol": "ULTRACEMCO",
+  "exchange": "NSE",
+  "name": "UltraTech Cement Ltd.",
+  "sector": "Construction Materials",
+  "isin": "INE481G01011",
+  "indices": [
+   "NIFTY 50"
+  ]
+ }
+]
