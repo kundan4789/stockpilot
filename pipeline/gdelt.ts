@@ -16,15 +16,25 @@ interface GdeltArticle {
 
 const toIso = (s: string) => (/^\d{8}T\d{6}Z$/.test(s) ? `${s.slice(0, 4)}-${s.slice(4, 6)}-${s.slice(6, 8)}T${s.slice(9, 11)}:${s.slice(11, 13)}:${s.slice(13, 15)}Z` : new Date().toISOString());
 
+let newsDeadline = Infinity;
+let consecutive429 = 0;
+export function setNewsBudget(ms: number) {
+  newsDeadline = Date.now() + ms;
+}
+
 async function query(q: string, timespan = "14d", max = 40, attempt = 0): Promise<{ articles: GdeltArticle[]; retrievedAt: string }> {
   const url = `https://api.gdeltproject.org/api/v2/doc/doc?query=${encodeURIComponent(`${q} sourcelang:english`)}&mode=artlist&maxrecords=${max}&format=json&sort=datedesc&timespan=${timespan}`;
+  if (/\bOR\b/.test(q) && !q.trim().startsWith("(")) return query(`(${q})`, timespan, max, attempt);
+  if (Date.now() > newsDeadline) throw new Error("news time budget reached");
   let r: { data: { articles?: GdeltArticle[] } | string; retrievedAt: string };
   try {
     r = await fetchSource<{ articles?: GdeltArticle[] } | string>(url, { source: "gdelt", as: "text", timeoutMs: 30_000, retries: 0 });
   } catch (e) {
     // GDELT throttles shared cloud IPs: back off and retry (up to 3 times).
-    if (attempt < 3 && /429|fetch failed|abort/i.test((e as Error).message)) {
-      await new Promise((res) => setTimeout(res, 20_000 * (attempt + 1)));
+    if (/429/.test((e as Error).message)) consecutive429++;
+    if (consecutive429 >= 4) newsDeadline = 0; // GDELT is throttling this runner — stop asking this run
+    if (attempt < 1 && /429|fetch failed|abort/i.test((e as Error).message) && Date.now() < newsDeadline) {
+      await new Promise((res) => setTimeout(res, 15_000));
       return query(q, timespan, max, attempt + 1);
     }
     throw e;
@@ -36,6 +46,7 @@ async function query(q: string, timespan = "14d", max = 40, attempt = 0): Promis
   } catch {
     throw new Error(`GDELT: ${sanitizeText(String(r.data), 160)}`);
   }
+  consecutive429 = 0;
   return { articles: parsed.articles ?? [], retrievedAt: r.retrievedAt };
 }
 
@@ -118,8 +129,8 @@ export async function fetchUniverseNews(universe: StockMaster[], log: (s: string
   };
   let ok = 0, failed = 0;
   // 1. Company batches
-  for (let i = 0; i < universe.length; i += 10) {
-    const batch = universe.slice(i, i + 10);
+  for (let i = 0; i < universe.length; i += 5) {
+    const batch = universe.slice(i, i + 5);
     const q = `(${batch.map((c) => `"${shortName(c.name)}"`).join(" OR ")})`;
     try {
       const { articles, retrievedAt } = await query(q, "14d", 250);
@@ -127,7 +138,7 @@ export async function fetchUniverseNews(universe: StockMaster[], log: (s: string
       ok++;
     } catch (e) {
       failed++;
-      log(`GDELT batch ${i / 10 + 1} failed: ${(e as Error).message}`);
+      log(`GDELT batch ${i / 5 + 1} failed: ${(e as Error).message}`);
     }
   }
   // 2. Sector & macro themes, once each

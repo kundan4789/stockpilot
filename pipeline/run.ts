@@ -12,7 +12,7 @@ import { evidenceNumbers, NarrativeSchema, SYSTEM_PROMPT, validateNarrative, typ
 import { env } from "./env";
 import { httpLog, usage } from "./http";
 import { feedStatus, fetchCorporateEvents, fetchIndicesClose, latestAvailable, NSE_URLS } from "./nse";
-import { fetchMarketNews, fetchUniverseNews } from "./gdelt";
+import { fetchMarketNews, fetchUniverseNews, setNewsBudget } from "./gdelt";
 import { fetchFred, fetchImf, fetchWorldBank } from "./macro";
 import { fetchSensex } from "./bse";
 import { SECTOR_INDEX } from "./fundamentals";
@@ -86,15 +86,12 @@ async function main() {
   // 4. Market news
   const marketNews = await fetchMarketNews().catch((e) => (say(`Market news failed: ${(e as Error).message}`), [] as NewsItem[]));
 
-  // 4b. News for the whole universe (batched)
-  const newsMap = await fetchUniverseNews(universe, say);
-
   // 5a. Fundamentals & shareholding (AI search with citations; ≤ 25 companies per run, oldest first)
   if (env.geminiKey) {
     const ages = await Promise.all(universe.map(async (c) => ({ c, t: (await readJson<FinancialsBundle | null>(dataPath("fundamentals", `${c.symbol}.json`), null))?.retrievedAt ?? "" })));
     let done = 0;
     for (const { c } of ages.sort((a, b) => a.t.localeCompare(b.t)).slice(0, 25)) {
-      if (Date.now() > deadline - 25 * 60_000) break;
+      if (Date.now() > t0 + 20 * 60_000) break; // at most ~20 minutes on fundamentals per run
       const close = prices.get(c.symbol)?.at(-1)?.close ?? null;
       try {
         if (await refreshFundamentals(c, close, say)) done++;
@@ -105,6 +102,10 @@ async function main() {
     }
     say(`Fundamentals refreshed for ${done} compan${done === 1 ? "y" : "ies"}`);
   }
+
+  // 4b. News for the whole universe (batched, capped at 12 minutes; stored news is kept if GDELT throttles us)
+  setNewsBudget(12 * 60_000);
+  const newsMap = await fetchUniverseNews(universe, say);
 
   // 5b. Per-stock research
   const ai = getAIProvider();
