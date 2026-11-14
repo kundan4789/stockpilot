@@ -31,17 +31,19 @@ export const HORIZON_TILT: Record<Horizon, Partial<Record<keyof ScoringWeights, 
 
 export const THRESHOLDS = { strongBuy: 75, buy: 60, hold: 45, sell: 30 };
 
+/** STRONG verdicts additionally require confidence ≥ 60 (broad, fresh evidence). */
 export function verdictFor(score: number | null, confidence: number): Verdict {
   if (score == null || confidence < 40) return "INSUFFICIENT DATA";
-  if (score >= THRESHOLDS.strongBuy) return "STRONG BUY";
+  const strongOk = confidence >= 60;
+  if (score >= THRESHOLDS.strongBuy) return strongOk ? "STRONG BUY" : "BUY";
   if (score >= THRESHOLDS.buy) return "BUY";
   if (score >= THRESHOLDS.hold) return "HOLD";
   if (score >= THRESHOLDS.sell) return "SELL";
-  return "STRONG SELL";
+  return strongOk ? "STRONG SELL" : "SELL";
 }
 
 export function globalScore(news: NewsItem[]): { score: number | null; coverage: number; explanation: string[] } {
-  const rel = news.filter((n) => n.relevance >= 0.3 && n.impact !== "none");
+  const rel = news.filter((n) => n.relevance >= 0.5 && n.impact !== "none");
   if (rel.length < 3) return { score: null, coverage: rel.length / 3, explanation: [`Only ${rel.length} relevant news items (≥3 needed); global score not computed.`] };
   const iw = { high: 3, medium: 2, low: 1, none: 0 } as const;
   let num = 0, den = 0;

@@ -336,7 +336,8 @@ function Report({ rep, history, custom }: { rep: ResearchReport; history: Hist; 
             </>
           )}
         </Card>
-        <Card title="Financial statements" subtitle={fin ? <>{fin.source} · {fin.currency} · retrieved {fin.retrievedAt.slice(0, 10)} {fin.sourceUrl && <SourceLink href={fin.sourceUrl}>link</SourceLink>}</> : undefined}>
+        <Card title="Financial statements" subtitle={fin ? <>{fin.currency} · retrieved {fin.retrievedAt.slice(0, 10)}</> : undefined}>
+          {fin?.note && <Notice className="mb-2">{fin.note}</Notice>}
           {!fin ? (
             <Unavailable what="Financial statements" why="Import annual/quarterly figures in Settings." />
           ) : (
@@ -354,6 +355,14 @@ function Report({ rep, history, custom }: { rep: ResearchReport; history: Hist; 
                   ))}
                 </tbody>
               </table>
+            </div>
+          )}
+          {fin && "citations" in fin && Array.isArray((fin as { citations?: unknown }).citations) && (
+            <div className="mt-2 text-[11px] text-faint">
+              Sources:{" "}
+              {((fin as unknown as { citations: { uri: string; title?: string }[] }).citations).map((c, i) => (
+                <a key={i} href={c.uri} target="_blank" rel="noopener noreferrer nofollow" className="mr-2 text-accent hover:underline">{c.title ?? `source ${i + 1}`}</a>
+              ))}
             </div>
           )}
         </Card>

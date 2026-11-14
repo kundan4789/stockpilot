@@ -11,12 +11,13 @@ import { combineScores, confidenceScore, DEFAULT_WEIGHTS, globalScore, riskScore
 import { evidenceNumbers, NarrativeSchema, SYSTEM_PROMPT, validateNarrative, type Narrative } from "../src/lib/ai/narrative";
 import { env } from "./env";
 import { httpLog, usage } from "./http";
-import { fetchCorporateEvents, fetchIndicesClose, latestAvailable, NSE_URLS } from "./nse";
+import { feedStatus, fetchCorporateEvents, fetchIndicesClose, latestAvailable, NSE_URLS } from "./nse";
 import { fetchCompanyNews, fetchMarketNews } from "./gdelt";
 import { fetchFred, fetchImf, fetchWorldBank } from "./macro";
 import { fetchSensex } from "./bse";
 import { SECTOR_INDEX } from "./fundamentals";
 import { getAIProvider } from "./gemini";
+import { refreshFundamentals } from "./fundamentals-ai";
 import { loadUniverse, syncPrices } from "./prices";
 import { dataPath, loadState, readJson, saveState, sitePath, writeJson } from "./store";
 
@@ -63,11 +64,32 @@ async function main() {
   // 4. Market news
   const marketNews = await fetchMarketNews().catch((e) => (say(`Market news failed: ${(e as Error).message}`), [] as NewsItem[]));
 
-  // 5. Per-stock research
+  // 5a. Fundamentals & shareholding (AI search with citations; ≤ 25 companies per run, oldest first)
+  if (env.geminiKey) {
+    const ages = await Promise.all(universe.map(async (c) => ({ c, t: (await readJson<FinancialsBundle | null>(dataPath("fundamentals", `${c.symbol}.json`), null))?.retrievedAt ?? "" })));
+    let done = 0;
+    for (const { c } of ages.sort((a, b) => a.t.localeCompare(b.t)).slice(0, 25)) {
+      if (Date.now() > deadline - 30 * 60_000) break;
+      const close = prices.get(c.symbol)?.at(-1)?.close ?? null;
+      try {
+        if (await refreshFundamentals(c, close, say)) done++;
+      } catch (e) {
+        say(`${c.symbol}: fundamentals failed — ${(e as Error).message.slice(0, 160)}`);
+        if ((e as Error).message.includes("429") || (e as Error).message.includes("quota")) break;
+      }
+    }
+    say(`Fundamentals refreshed for ${done} compan${done === 1 ? "y" : "ies"}`);
+  }
+
+  // 5b. Per-stock research
   const ai = getAIProvider();
   const reports: ResearchReport[] = [];
   const ordered = [...universe].sort((a, b) => a.symbol.localeCompare(b.symbol));
   for (const company of ordered) {
+    if (Date.now() > deadline) {
+      say(`Time budget reached — ${company.symbol} and later stocks keep their previous report until the next run`);
+      break;
+    }
     const extraEvents = adjustmentEvents.get(company.symbol) ?? [];
     try {
       const rep = await research(company, universe, prices, indexRows, idx?.value.url ?? null, idx?.value.retrievedAt ?? null, macro, extraEvents, ai);
@@ -77,6 +99,15 @@ async function main() {
     } catch (e) {
       say(`${company.symbol}: FAILED — ${(e as Error).message}`);
     }
+  }
+
+  say(`NSE feeds: ${feedStatus.join("; ")}`);
+
+  // Stocks not reached this run keep their previous report (if any) in the site files.
+  for (const c of ordered) {
+    if (reports.some((r) => r.company.symbol === c.symbol)) continue;
+    const prevRep = await readJson<ResearchReport | null>(sitePath("reports", `${c.symbol}.json`), null);
+    if (prevRep) reports.push(prevRep);
   }
 
   // 6. Site-level files
@@ -230,6 +261,8 @@ async function research(
   ];
   const recommendations: HorizonRecommendation[] = (Object.keys(HORIZONS) as Horizon[]).map((h) => {
     const c = combineScores(components, h, DEFAULT_WEIGHTS);
+    // Short-horizon timing adjustment: stretched (overbought) prices carry pull-back risk.
+    if (c.score != null && technical.condition === "overbought" && (h === "short" || h === "swing")) c.score -= h === "short" ? 8 : 4;
     const conf = confidenceScore(c.coverage, priceAge, ai.available());
     const verdict = verdictFor(c.score, conf.confidence);
     const levels = computeLevels(h, candles, technical, finEff, now);
@@ -252,6 +285,7 @@ async function research(
   if (technical.trend === "bearish") negative.push("Bearish trend structure: close below a falling 50-day average with negative MACD histogram.");
   for (const e of events.filter((e) => ["board_meeting", "dividend", "buyback", "results", "merger", "acquisition"].includes(e.type)).slice(0, 4)) positive.push(`Corporate event: ${e.title.slice(0, 160)} (${e.date}, ${e.source}).`);
   news.filter((n) => n.impact === "high" || (n.impact === "medium" && n.relevance >= 0.5)).slice(0, 8).forEach((n) => (n.sentiment === "positive" ? positive : n.sentiment === "negative" ? negative : []).push(`${n.headline} — ${n.publisher}, ${n.publishedAt.slice(0, 10)} [relevance ${n.relevance.toFixed(2)}, ${n.impact} impact]`));
+  if (technical.condition === "overbought") risks.push(`RSI14 ${technical.rsi14?.toFixed(1)} is overbought — short-term score reduced by 8 points and swing by 4 (pull-back risk).`);
   if (technical.atrPct != null && technical.atrPct > 3) risks.push(`Elevated volatility: ATR is ${technical.atrPct.toFixed(2)}% of price.`);
   if (technical.sma200 != null && technical.close != null && technical.close < technical.sma200) risks.push("Price is below its 200-day average (long-term uptrend not confirmed).");
   if (technical.high52w && technical.close && (technical.high52w - technical.close) / technical.high52w > 0.2) risks.push(`Trading ${(((technical.high52w - technical.close) / technical.high52w) * 100).toFixed(1)}% below its 52-week high.`);

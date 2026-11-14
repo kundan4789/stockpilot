@@ -99,11 +99,11 @@ export function scoreRelevance(headline: string, company: StockMaster, theme: Th
   const h = headline.toLowerCase();
   const sn = shortName(company.name).toLowerCase();
   const firstWord = sn.split(" ")[0];
-  if (h.includes(sn) || new RegExp(`\\b${company.symbol.toLowerCase()}\\b`).test(h))
-    return { relevance: 0.95, category: "company", evidence: `Headline names ${shortName(company.name)} directly.` };
-  if (firstWord.length > 3 && new RegExp(`\\b${firstWord}\\b`).test(h))
-    return { relevance: 0.7, category: "company", evidence: `Headline mentions "${firstWord}", likely referring to ${shortName(company.name)} or its group.` };
-  const comp = competitors.find((c) => h.includes(shortName(c).toLowerCase().split(" ")[0]));
+  if (h.includes(sn)) return { relevance: 0.95, category: "company", evidence: `Headline names ${shortName(company.name)} directly.` };
+  const GENERIC = new Set(["state", "bank", "india", "indian", "bharat", "power", "oil", "steel", "life", "hindustan", "national", "general", "united", "asian", "grasim", "coal"]);
+  if (firstWord.length > 3 && !GENERIC.has(firstWord) && new RegExp(`\\b${firstWord}\\b`).test(h))
+    return { relevance: 0.5, category: "group", evidence: `Headline mentions "${firstWord}" — may refer to ${shortName(company.name)} or another company of the same group.` };
+  const comp = competitors.find((c) => h.includes(shortName(c).toLowerCase()));
   if (comp) return { relevance: 0.55, category: "competitor", evidence: `Mentions peer ${shortName(comp)}; competitor developments can shift share, pricing or sentiment in ${company.sector ?? "the sector"}.` };
   if (theme) return { relevance: theme.weight, category: theme.category, evidence: theme.why };
   return { relevance: 0.1, category: "other", evidence: "No direct link found to the company; shown for context only." };

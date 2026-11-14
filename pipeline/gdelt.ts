@@ -18,7 +18,7 @@ const toIso = (s: string) => (/^\d{8}T\d{6}Z$/.test(s) ? `${s.slice(0, 4)}-${s.s
 
 async function query(q: string, timespan = "14d", max = 40): Promise<{ articles: GdeltArticle[]; retrievedAt: string }> {
   const url = `https://api.gdeltproject.org/api/v2/doc/doc?query=${encodeURIComponent(`${q} sourcelang:english`)}&mode=artlist&maxrecords=${max}&format=json&sort=datedesc&timespan=${timespan}`;
-  const r = await fetchSource<{ articles?: GdeltArticle[] } | string>(url, { source: "gdelt", ttlSeconds: 60 * 60 * 3, as: "text" });
+  const r = await fetchSource<{ articles?: GdeltArticle[] } | string>(url, { source: "gdelt", ttlSeconds: 60 * 60 * 3, as: "text", timeoutMs: 20_000, retries: 1 });
   // GDELT returns plain-text errors (e.g. "query too short") with HTTP 200.
   let parsed: { articles?: GdeltArticle[] } = {};
   try {
@@ -34,8 +34,7 @@ export async function fetchCompanyNews(company: StockMaster, competitors: StockM
   const tasks: { q: string; theme: Theme | null }[] = [{ q: `"${sn}"`, theme: null }];
   for (const t of SECTOR_THEMES[company.sector ?? ""] ?? []) tasks.push({ q: t.query, theme: t });
   for (const t of MACRO_THEMES.slice(0, 2)) tasks.push({ q: t.query, theme: t });
-  const comps = competitors.slice(0, 3);
-  if (comps.length) tasks.push({ q: `(${comps.map((c) => `"${shortName(c.name)}"`).join(" OR ")})`, theme: null });
+  const comps = competitors.slice(0, 5); // used only to recognise competitor mentions in headlines
 
   const errors: string[] = [];
   const seen = new Set<string>();
@@ -68,6 +67,7 @@ export async function fetchCompanyNews(company: StockMaster, competitors: StockM
       }
     } catch (e) {
       errors.push(`${t.q}: ${(e as Error).message}`);
+      if ((e as Error).message.includes("429")) await new Promise((r) => setTimeout(r, 30_000)); // GDELT asks clients to slow down
       if ((e as Error).name === "QuotaExceededError" || (e as Error).message.includes("quota")) break;
     }
   }

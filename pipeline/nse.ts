@@ -12,14 +12,15 @@ export const NSE_URLS = {
   indicesClose: (d: Date) => `https://nsearchives.nseindia.com/content/indices/ind_close_all_${ddmmyyyy(d)}.csv`,
   equityList: "https://nsearchives.nseindia.com/content/equities/EQUITY_L.csv",
   indexList: (file: string) => `https://nsearchives.nseindia.com/content/indices/${file}`,
-  // RSS feeds listed at https://www.nseindia.com/static/rss-feed — verify the paths there if a feed starts returning 404.
+  // RSS feeds listed at https://www.nseindia.com/static/rss-feed. Several spellings are tried;
+  // the first that responds is used and the result is logged.
   rss: {
-    announcements: "https://nsearchives.nseindia.com/content/RSS/Online_announcements.xml",
-    financialResults: "https://nsearchives.nseindia.com/content/RSS/Financial_Results.xml",
-    boardMeetings: "https://nsearchives.nseindia.com/content/RSS/Board_Meetings.xml",
-    corporateActions: "https://nsearchives.nseindia.com/content/RSS/Corporate_action.xml",
-    annualReports: "https://nsearchives.nseindia.com/content/RSS/Annual_Reports.xml",
-  },
+    announcements: ["Online_announcements.xml"],
+    financialResults: ["Financial_Results.xml", "Financial_Result.xml", "financial_results.xml", "Fin_Results.xml"],
+    boardMeetings: ["Board_Meetings.xml", "Board_Meeting.xml", "board_meetings.xml", "BoardMeetings.xml"],
+    corporateActions: ["Corporate_action.xml", "Corporate_Actions.xml", "Corporate_actions.xml", "corporate_action.xml"],
+    annualReports: ["Annual_Reports.xml", "Annual_Report.xml", "annual_reports.xml"],
+  } as Record<string, string[]>,
 };
 
 export const INDEX_FILES: Record<string, string> = {
@@ -159,7 +160,7 @@ export async function fetchSecurityMaster(): Promise<StockMaster[]> {
   return [...master.values()];
 }
 
-const RSS_TYPE: Record<keyof typeof NSE_URLS.rss, EventType> = {
+const RSS_TYPE: Record<string, EventType> = {
   announcements: "announcement",
   financialResults: "results",
   boardMeetings: "board_meeting",
@@ -178,35 +179,59 @@ function classify(title: string, fallback: EventType): EventType {
   return fallback;
 }
 
+const norm = (x: string) => x.toUpperCase().replace(/&AMP;/g, "&").replace(/\b(LIMITED|LTD)\b\.?/g, "").replace(/[^A-Z0-9&]+/g, " ").trim();
+
+let feedCache: Promise<{ key: string; url: string; items: ReturnType<typeof parseRss>; retrievedAt: string }[]> | null = null;
+export const feedStatus: string[] = [];
+
+/** Fetch every NSE feed once per run (first working URL variant). */
+function loadFeeds() {
+  if (!feedCache)
+    feedCache = (async () => {
+      const out: { key: string; url: string; items: ReturnType<typeof parseRss>; retrievedAt: string }[] = [];
+      for (const [key, names] of Object.entries(NSE_URLS.rss)) {
+        let ok = false;
+        for (const name of names) {
+          const url = `https://nsearchives.nseindia.com/content/RSS/${name}`;
+          try {
+            const r = await fetchSource<string>(url, { source: "nse", as: "text", headers: HEADERS, retries: 0 });
+            const items = parseRss(r.data);
+            out.push({ key, url, items, retrievedAt: r.retrievedAt });
+            feedStatus.push(`${key}: ${name} (${items.length} items)`);
+            ok = true;
+            break;
+          } catch {
+            /* try next spelling */
+          }
+        }
+        if (!ok) feedStatus.push(`${key}: no working URL among ${names.join(", ")}`);
+      }
+      return out;
+    })();
+  return feedCache;
+}
+
 /**
- * Corporate events for a company from NSE's public RSS feeds. The feeds carry
- * recent items only (they are not an archive), so events are persisted on every refresh.
+ * Corporate events for a company from NSE's public RSS feeds. Items are matched on
+ * the exact company name in the item title (NSE puts the company name there).
  */
 export async function fetchCorporateEvents(company: StockMaster): Promise<{ events: CorporateEvent[]; errors: string[] }> {
+  const feeds = await loadFeeds();
+  const want = norm(company.name);
   const events: CorporateEvent[] = [];
-  const errors: string[] = [];
-  const name = company.name.toUpperCase().replace(/\bLIMITED\b|\bLTD\.?\b/g, "").trim();
-  await Promise.all(
-    (Object.keys(NSE_URLS.rss) as (keyof typeof NSE_URLS.rss)[]).map(async (k) => {
-      try {
-        const r = await fetchSource<string>(NSE_URLS.rss[k], { source: "nse", as: "text", ttlSeconds: 60 * 30, headers: HEADERS, retries: 1 });
-        for (const it of parseRss(r.data)) {
-          const hay = `${it.title} ${it.description}`.toUpperCase();
-          if (!hay.includes(name) && !new RegExp(`\\b${company.symbol}\\b`).test(hay)) continue;
-          events.push({ type: classify(`${it.title} ${it.description}`, RSS_TYPE[k]), title: it.description ? `${it.title} — ${it.description}`.slice(0, 400) : it.title, date: (it.pubDate ?? r.retrievedAt).slice(0, 10), url: it.link ?? undefined, source: `NSE RSS (${k})` });
-        }
-      } catch (e) {
-        errors.push(`${k}: ${(e as Error).message}`);
-      }
-    }),
-  );
-  // The same filing often appears in several feeds (e.g. announcements + board meetings).
+  for (const f of feeds)
+    for (const it of f.items) {
+      if (norm(it.title) !== want) continue;
+      events.push({ type: classify(`${it.title} ${it.description}`, RSS_TYPE[f.key] ?? "announcement"), title: it.description ? `${it.title} — ${it.description}`.slice(0, 400) : it.title, date: (it.pubDate ?? f.retrievedAt).slice(0, 10), url: it.link ?? undefined, source: `NSE RSS (${f.key})` });
+    }
   const seen = new Set<string>();
-  const unique = events.filter((e) => {
-    const k = `${e.date}|${e.title.toLowerCase()}`;
-    if (seen.has(k)) return false;
-    seen.add(k);
-    return true;
-  });
-  return { events: unique, errors };
+  return {
+    events: events.filter((e) => {
+      const k = `${e.date}|${e.title.toLowerCase()}`;
+      if (seen.has(k)) return false;
+      seen.add(k);
+      return true;
+    }),
+    errors: [],
+  };
 }
