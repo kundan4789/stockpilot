@@ -9,6 +9,7 @@ import { fetchSource } from "./http";
 import { dataPath, readJson, writeJson } from "./store";
 
 const REFRESH_DAYS = 30;
+const deadModels = new Set<string>();
 
 interface Grounded {
   candidates?: { content?: { parts?: { text?: string }[] }; groundingMetadata?: { groundingChunks?: { web?: { uri?: string; title?: string } }[] } }[];
@@ -104,9 +105,22 @@ export async function refreshFundamentals(c: StockMaster, lastClose: number | nu
   const file = dataPath("fundamentals", `${c.symbol}.json`);
   const cur = await readJson<FinancialsBundle | null>(file, null);
   if (cur && Date.now() - new Date(cur.retrievedAt).getTime() < REFRESH_DAYS * 86400000) return false;
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${env.geminiModel}:generateContent`;
   const body = JSON.stringify({ contents: [{ role: "user", parts: [{ text: prompt(c) }] }], tools: [{ google_search: {} }], generationConfig: { temperature: 0 } });
-  const r = await fetchSource<Grounded>(url, { source: "gemini", method: "POST", body, headers: { "Content-Type": "application/json", "x-goog-api-key": env.geminiKey }, timeoutMs: 90_000, retries: 1 });
+  // Free-tier search quotas differ by model: try the configured search model, then fall back.
+  const models = [...new Set([env.searchModel, "gemini-3.6-flash", env.geminiModel, "gemini-3.1-flash-lite"].filter(Boolean) as string[])];
+  let r: { data: Grounded } | null = null;
+  let lastErr: unknown = null;
+  for (const m of models) {
+    if (deadModels.has(m)) continue;
+    try {
+      r = await fetchSource<Grounded>(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`, { source: "gemini", method: "POST", body, headers: { "Content-Type": "application/json", "x-goog-api-key": env.geminiKey }, timeoutMs: 90_000, retries: 0, cache: false });
+      break;
+    } catch (e) {
+      lastErr = e;
+      if (/429|404|400/.test((e as Error).message)) deadModels.add(m); // quota exhausted / not available for search on this key
+    }
+  }
+  if (!r) throw lastErr ?? new Error("No Gemini model available for search grounding");
   const cand = r.data.candidates?.[0];
   const text = cand?.content?.parts?.map((p) => p.text ?? "").join("") ?? "";
   const json = text.slice(text.indexOf("{"), text.lastIndexOf("}") + 1);

@@ -12,7 +12,7 @@ import { evidenceNumbers, NarrativeSchema, SYSTEM_PROMPT, validateNarrative, typ
 import { env } from "./env";
 import { httpLog, usage } from "./http";
 import { feedStatus, fetchCorporateEvents, fetchIndicesClose, latestAvailable, NSE_URLS } from "./nse";
-import { fetchCompanyNews, fetchMarketNews } from "./gdelt";
+import { fetchMarketNews, fetchUniverseNews } from "./gdelt";
 import { fetchFred, fetchImf, fetchWorldBank } from "./macro";
 import { fetchSensex } from "./bse";
 import { SECTOR_INDEX } from "./fundamentals";
@@ -86,18 +86,21 @@ async function main() {
   // 4. Market news
   const marketNews = await fetchMarketNews().catch((e) => (say(`Market news failed: ${(e as Error).message}`), [] as NewsItem[]));
 
+  // 4b. News for the whole universe (batched)
+  const newsMap = await fetchUniverseNews(universe, say);
+
   // 5a. Fundamentals & shareholding (AI search with citations; ≤ 25 companies per run, oldest first)
   if (env.geminiKey) {
     const ages = await Promise.all(universe.map(async (c) => ({ c, t: (await readJson<FinancialsBundle | null>(dataPath("fundamentals", `${c.symbol}.json`), null))?.retrievedAt ?? "" })));
     let done = 0;
     for (const { c } of ages.sort((a, b) => a.t.localeCompare(b.t)).slice(0, 25)) {
-      if (Date.now() > deadline - 30 * 60_000) break;
+      if (Date.now() > deadline - 25 * 60_000) break;
       const close = prices.get(c.symbol)?.at(-1)?.close ?? null;
       try {
         if (await refreshFundamentals(c, close, say)) done++;
       } catch (e) {
         say(`${c.symbol}: fundamentals failed — ${(e as Error).message.slice(0, 160)}`);
-        if ((e as Error).message.includes("429") || (e as Error).message.includes("quota")) break;
+        if (/429|quota|No Gemini model/.test((e as Error).message)) break;
       }
     }
     say(`Fundamentals refreshed for ${done} compan${done === 1 ? "y" : "ies"}`);
@@ -114,7 +117,7 @@ async function main() {
     }
     const extraEvents = adjustmentEvents.get(company.symbol) ?? [];
     try {
-      const rep = await research(company, universe, prices, indexRows, idx?.value.url ?? null, idx?.value.retrievedAt ?? null, macro, extraEvents, ai, fo);
+      const rep = await research(company, universe, prices, indexRows, idx?.value.url ?? null, idx?.value.retrievedAt ?? null, macro, extraEvents, ai, fo, newsMap.get(company.symbol) ?? []);
       reports.push(rep);
       await writeJson(sitePath("reports", `${company.symbol}.json`), rep);
       say(`${company.symbol}: ${rep.recommendations.map((r) => `${r.horizon}=${r.verdict}`).join(", ")} | conf ${rep.confidence} | ${rep.news.length} news | ${rep.narrativeSource.split(" (")[0]}`);
@@ -232,6 +235,7 @@ async function research(
   extraEvents: CorporateEvent[],
   ai: ReturnType<typeof getAIProvider>,
   fo: Awaited<ReturnType<typeof fetchFo>>,
+  freshNews: NewsItem[],
 ): Promise<ResearchReport> {
   const steps: StepStatus[] = [{ step: "Identify company", status: "ok", detail: `${company.name} (NSE: ${company.symbol}${company.sector ? `, ${company.sector}` : ""})`, source: "NSE NIFTY 50 constituents file" }];
   const sources: SourceRef[] = [];
@@ -262,7 +266,7 @@ async function research(
   const peers = universe.filter((s) => s.symbol !== company.symbol && s.sector && s.sector === company.sector).slice(0, 5);
   const newsFile = dataPath("news", `${company.symbol}.json`);
   const oldNews = await readJson<NewsItem[]>(newsFile, []);
-  const fresh = await fetchCompanyNews(company, peers).catch((e) => ({ items: [] as NewsItem[], errors: [(e as Error).message], queries: [] as string[] }));
+  const fresh = { items: freshNews, errors: [] as string[], queries: ["batched GDELT queries"] };
   const cutoff = new Date(Date.now() - 45 * 86400000).toISOString();
   const byUrl = new Map([...oldNews, ...fresh.items].filter((n) => n.publishedAt >= cutoff).map((n) => [n.url, n]));
   const allNews = [...byUrl.values()];
