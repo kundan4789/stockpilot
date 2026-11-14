@@ -1,0 +1,70 @@
+# StockPilot AI — free daily research + website deploy (GitHub Actions + GitHub Pages).
+name: Daily research & deploy
+
+on:
+  schedule:
+    - cron: "15 13 * * 1-5"   # 18:45 IST, Mon–Fri — after NSE publishes the day's bhavcopy
+  workflow_dispatch:
+    inputs:
+      research:
+        description: "Run the research pipeline (uncheck to only rebuild the site)"
+        type: boolean
+        default: true
+  push:
+    branches: [main]
+    paths-ignore: ["data/**", "public/data/**", "**.md"]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: stockpilot
+  cancel-in-progress: false
+
+jobs:
+  research-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+
+      - name: Research pipeline (NSE, GDELT, macro, scoring, AI)
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.research)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+          MAX_MINUTES: "80"
+        run: npx tsx pipeline/run.ts
+
+      - name: Save data to the repository
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.research)
+        run: |
+          git config user.name "stockpilot-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data public/data
+          git diff --cached --quiet || git commit -m "Daily research update $(date -u +%F)"
+          git pull --rebase --autostash origin main && git push
+
+      - name: Build website
+        run: npm run build
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}
+
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: out }
+
+  deploy:
+    needs: research-and-build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
