@@ -10,14 +10,17 @@ export const SEC_FILERS: Record<string, { cik: string; adr: string }> = {
   INFY: { cik: "0001067491", adr: "INFY" },
   WIPRO: { cik: "0001123799", adr: "WIT" },
   HDFCBANK: { cik: "0001144967", adr: "HDB" },
-  ICICIBANK: { cik: "0001103838", adr: "IBN" },
+  // ICICIBANK (CIK 0001103838) files 20-F without XBRL company facts on EDGAR — not available here.
   DRREDDY: { cik: "0001135951", adr: "RDY" },
 };
 
 type Unit = { end: string; val: number; fy: number; fp: string; form: string; filed: string; start?: string };
 type Facts = { facts?: Record<string, Record<string, { units: Record<string, Unit[]> }>> };
 
+/** Among all candidate tags/units, use the series with the most recent fiscal year (companies change tags over time). */
 function annual(f: Facts, tags: string[]): { unit: string; byYear: Map<string, number> } | null {
+  let best: { unit: string; byYear: Map<string, number> } | null = null;
+  const latest = (m: Map<string, number>) => [...m.keys()].sort().at(-1) ?? "";
   for (const ns of ["ifrs-full", "us-gaap"]) {
     for (const t of tags) {
       const units = f.facts?.[ns]?.[t]?.units;
@@ -30,11 +33,11 @@ function annual(f: Facts, tags: string[]): { unit: string; byYear: Map<string, n
           const fy = `FY${o.end.slice(0, 4)}`;
           if (!m.has(fy)) m.set(fy, o.val);
         }
-        if (m.size) return { unit, byYear: m };
+        if (m.size && (!best || latest(m) > latest(best.byYear))) best = { unit, byYear: m };
       }
     }
   }
-  return null;
+  return best;
 }
 
 export async function refreshSecFundamentals(symbol: string, log: (s: string) => void): Promise<boolean> {
