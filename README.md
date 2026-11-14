@@ -15,10 +15,13 @@ Every weekday 18:45 IST — GitHub Actions (free)
     2. Prices (5 years) ......... NSE daily bhavcopy, split/bonus adjusted
     3. Indices + sector P/E ..... NSE ind_close_all;  SENSEX: BSE RSS
     4. Corporate disclosures .... NSE RSS feeds (announcements, results, board meetings…)
-    5. News & global themes ..... GDELT (relevance + reason for every item)
-    6. Macro .................... FRED, World Bank, IMF
-    7. Technicals, scores, levels   (deterministic, unit-tested)
-    8. Research narrative ....... Google Gemini free tier (numbers validated)
+    5. Fundamentals ............. Gemini + Google Search grounding (cited, range-checked, 30-day refresh)
+    6. F&O ...................... NSE F&O UDiFF bhavcopy: OI build-up, PCR, max pain, option-OI support/resistance
+    7. News & global themes ..... GDELT (relevance + reason for every item; best-effort, time-capped)
+    8. Macro .................... FRED, World Bank, IMF
+    9. Technicals, scores, levels, chart signals + back-test (deterministic, unit-tested)
+   10. Weekly picks & trending .. transparent ranking rules (picks.json)
+   11. Research narrative ....... Google Gemini free tier (numbers validated)
   → commits data/ and public/data/*.json to this repo
   → builds the static site and deploys it to GitHub Pages
 ```
@@ -37,6 +40,12 @@ Every weekday 18:45 IST — GitHub Actions (free)
 3. **Actions → Daily research & deploy → Run workflow.** The first run downloads up to 5 years of prices (about 30 minutes). Later runs take about 15 minutes.
 
 Website: `https://<username>.github.io/stockpilot/`
+
+## Website sections
+
+Home (with this week's picks) · Top Picks of the Week · Search · AI Research (full report per stock) · Market Overview · Market Map (NIFTY 50 heatmap) · F&O Analyst · Stock Screener · Global Intelligence · Watchlist · Portfolio Simulator · Alerts · Settings.
+
+Every stock report includes ▲BUY/▼SELL chart signals with a 5-year back-test, a stop-loss & position-size calculator, the F&O view, fundamentals with citations, news with relevance reasons, and entry/target/stop levels for four horizons.
 
 ## Scoring model
 
