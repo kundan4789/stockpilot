@@ -19,6 +19,7 @@ import { fetchSensex } from "./bse";
 import { SECTOR_INDEX } from "./fundamentals";
 import { getAIProvider } from "./gemini";
 import { refreshFundamentals } from "./fundamentals-ai";
+import { refreshSecFundamentals, SEC_FILERS } from "./sec";
 import { analyzeFo, fetchFo, finalizeStance, type FoAnalysis } from "./fo";
 import { computeSignals } from "../src/lib/analysis/signals";
 import { loadUniverse, syncPrices } from "./prices";
@@ -87,8 +88,11 @@ async function main() {
   // 4. Market news
   const marketNews = await fetchMarketNews().catch((e) => (say(`Market news failed: ${(e as Error).message}`), [] as NewsItem[]));
 
-  // 5a. Fundamentals & shareholding (AI search with citations; ≤ 25 companies per run, oldest first)
-  if (env.geminiKey) {
+  // 5a. Official fundamentals from SEC 20-F filings (ADR-listed NIFTY 50 companies)
+  for (const sym of Object.keys(SEC_FILERS)) if (universe.some((u) => u.symbol === sym)) await refreshSecFundamentals(sym, say).catch((e) => say(`${sym}: SEC fetch failed — ${(e as Error).message.slice(0, 120)}`));
+
+  // 5a-2. Other companies: AI search with citations (needs a Gemini key with search-grounding quota)
+  if (env.geminiKey && !process.env.SKIP_AI_FUNDAMENTALS) {
     const ages = await Promise.all(universe.map(async (c) => ({ c, t: (await readJson<FinancialsBundle | null>(dataPath("fundamentals", `${c.symbol}.json`), null))?.retrievedAt ?? "" })));
     let done = 0;
     for (const { c } of ages.sort((a, b) => a.t.localeCompare(b.t)).slice(0, 25)) {

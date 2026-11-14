@@ -110,6 +110,13 @@ export function analyzeTechnicals(candles: Candle[]): TechnicalSnapshot {
   s.resistances = sr.resistances.slice(0, 3);
 
   const close = s.close as number;
+  const slope50Early = (() => {
+    const s50 = sma(closes, 50);
+    const a = s50[n - 1], b = s50[n - 11];
+    return a != null && b != null ? ((a - b) / b) * 100 : 0;
+  })();
+  const confirmedUp = close > (s.sma50 as number) && slope50Early > 0.5 && (s.macdHist ?? 0) > 0;
+  const confirmedDown = close < (s.sma50 as number) && slope50Early < -0.5 && (s.macdHist ?? 0) < 0;
   const expl: string[] = [];
   let pts = 0;
   let max = 0;
@@ -127,6 +134,15 @@ export function analyzeTechnicals(candles: Candle[]): TechnicalSnapshot {
   rule(10, close > (s.sma50 as number), "close above SMA50", "close below SMA50");
   rule(10, s.sma200 != null ? close > s.sma200 : null, "close above SMA200 (long-term uptrend)", "close below SMA200");
   rule(10, s.sma200 != null ? (s.sma50 as number) > s.sma200 : null, "SMA50 above SMA200 (golden-cross regime)", "SMA50 below SMA200");
+  // Trend confirmation (25 pts): a rising 50-day average with positive MACD — sideways markets earn nothing here
+  rule(25, confirmedDown ? false : confirmedUp, "confirmed uptrend (close above a rising SMA50, MACD histogram positive)", confirmedDown ? "confirmed downtrend" : "no confirmed trend (sideways)");
+  // Relative position in 52-week range (10 pts)
+  {
+    const yr = candles.slice(-252);
+    const hi = Math.max(...yr.map((c) => c.high)), lo = Math.min(...yr.map((c) => c.low));
+    const pos = hi > lo ? (close - lo) / (hi - lo) : null;
+    rule(10, pos == null ? null : pos >= 0.6, `price in upper 40% of its 52-week range (${pos != null ? Math.round(pos * 100) : "—"}%)`, `price in lower 60% of its 52-week range (${pos != null ? Math.round(pos * 100) : "—"}%)`);
+  }
   // Momentum (35 pts)
   rule(10, s.macdHist != null ? s.macdHist > 0 : null, "MACD above its signal line", "MACD below its signal line");
   rule(10, s.rsi14 != null ? s.rsi14 >= 45 && s.rsi14 <= 70 : null, "RSI in healthy 45–70 band", `RSI ${s.rsi14?.toFixed(1)} outside 45–70`);

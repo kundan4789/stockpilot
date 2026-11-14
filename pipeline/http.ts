@@ -10,6 +10,7 @@ export const SOURCE_POLICIES: Record<string, { minIntervalMs: number; maxPerRun:
   imf: { minIntervalMs: 1000, maxPerRun: 10 },
   gemini: { minIntervalMs: 6500, maxPerRun: 120 },
   tejhq: { minIntervalMs: 1000, maxPerRun: 100 },
+  sec: { minIntervalMs: 300, maxPerRun: 50 }, // SEC fair access: ≤ 10 requests/second
   gnews: { minIntervalMs: 1200, maxPerRun: 95 }, // free plan: 100 requests/day, 1 request/second
 };
 
