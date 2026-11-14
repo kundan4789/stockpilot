@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-14T16:21:02.790Z",
+ "generatedAt": "2026-11-14T16:33:27.067Z",
  "lastPriceDate": "2026-11-13",
  "backfill": {
   "done": true,
@@ -64,168 +64,192 @@
   "fred": 8,
   "worldbank": 2,
   "imf": 1,
-  "gdelt": 7,
-  "sec": 4,
+  "gdelt": 12,
+  "sec": 1,
   "gemini": 56,
-  "gnews": 51
+  "gnews": 1
  },
- "requests": 138,
+ "requests": 90,
  "failures": [
   {
-   "source": "sec",
-   "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001103838.json",
-   "status": 404,
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=(%22Sensex%22%20OR%20%22Nifty%22)%20(stocks%20OR%20market)%20sourcelang%3Aenglish&mode=artlist&maxrecords=30&format=json&sort=datedesc&timespan=2d",
+   "status": 429,
    "ok": false,
-   "ms": 161,
-   "message": "Not Found <?xml version=\"1.0\" encoding=\"UTF-8\"?> <Error><Code>NoSuchKey</Code><Message>The specified key does not exist.</Message><Key>api/xbrl/companyfacts/CIK0001103838.json</Key><RequestId>PR4F61A60GTGQ2W3</RequestId><HostId>Lw9LWAcbk8SqlfzQGAWepayhQWJKrh9qd53+Pgj27aMI1Q1jeHLvUCIAX2nhLvNTvbfgaRH7lMv7ZYwDHh",
-   "at": "2026-11-14T16:12:04.554Z"
+   "ms": 9790,
+   "message": "Too Many Requests Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngrams dataset: https://blog.gdeltproject.org/using-the-new-web-ngrams-dataset-to-find-relevant-coverage/. For trend analysis, please see our daily newslet",
+   "at": "2026-11-14T16:24:04.250Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=(%22Sensex%22%20OR%20%22Nifty%22)%20(stocks%20OR%20market)%20sourcelang%3Aenglish&mode=artlist&maxrecords=30&format=json&sort=datedesc&timespan=2d",
+   "status": 429,
+   "ok": false,
+   "ms": 9704,
+   "message": "Too Many Requests Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngrams dataset: https://blog.gdeltproject.org/using-the-new-web-ngrams-dataset-to-find-relevant-coverage/. For trend analysis, please see our daily newslet",
+   "at": "2026-11-14T16:24:28.963Z"
   },
   {
    "source": "gemini",
    "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent",
    "status": 429,
    "ok": false,
-   "ms": 166,
+   "ms": 138,
    "message": "Too Many Requests { \"error\": { \"code\": 429, \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \", \"status\": \"RESOURCE_EXHA",
-   "at": "2026-11-14T16:12:05.211Z"
+   "at": "2026-11-14T16:24:29.312Z"
   },
   {
    "source": "gemini",
    "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
    "status": 429,
    "ok": false,
-   "ms": 179,
+   "ms": 92,
    "message": "Too Many Requests { \"error\": { \"code\": 429, \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \", \"status\": \"RESOURCE_EXHA",
-   "at": "2026-11-14T16:12:11.727Z"
+   "at": "2026-11-14T16:24:35.767Z"
   },
   {
    "source": "gemini",
    "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent",
    "status": 429,
    "ok": false,
-   "ms": 164,
+   "ms": 129,
    "message": "Too Many Requests { \"error\": { \"code\": 429, \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \", \"status\": \"RESOURCE_EXHA",
-   "at": "2026-11-14T16:12:18.212Z"
+   "at": "2026-11-14T16:24:42.306Z"
   },
   {
    "source": "gdelt",
    "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=(%22Adani%20Enterprises%20.%22%20OR%20%22Adani%20Ports%20and%20Special%20Economic%20Zone%20.%22%20OR%20%22Apollo%20Hospitals%20Enterprise%20.%22%20OR%20%22Asian%20Paints%20.%22%20OR%20%22Axis%20Bank%20.%22)%20sourcelang%3Aenglish&mode=artlist&maxrecords=250&format=json&sort=datedesc&timespan=14d",
    "status": 429,
    "ok": false,
-   "ms": 11896,
+   "ms": 9711,
    "message": "Too Many Requests Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngrams dataset: https://blog.gdeltproject.org/using-the-new-web-ngrams-dataset-to-find-relevant-coverage/. For trend analysis, please see our daily newslet",
-   "at": "2026-11-14T16:12:30.109Z"
+   "at": "2026-11-14T16:24:52.018Z"
   },
   {
    "source": "gdelt",
    "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=(%22Adani%20Enterprises%20.%22%20OR%20%22Adani%20Ports%20and%20Special%20Economic%20Zone%20.%22%20OR%20%22Apollo%20Hospitals%20Enterprise%20.%22%20OR%20%22Asian%20Paints%20.%22%20OR%20%22Axis%20Bank%20.%22)%20sourcelang%3Aenglish&mode=artlist&maxrecords=250&format=json&sort=datedesc&timespan=14d",
    "status": 429,
    "ok": false,
-   "ms": 10650,
+   "ms": 12216,
    "message": "Too Many Requests Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngrams dataset: https://blog.gdeltproject.org/using-the-new-web-ngrams-dataset-to-find-relevant-coverage/. For trend analysis, please see our daily newslet",
-   "at": "2026-11-14T16:12:55.771Z"
+   "at": "2026-11-14T16:25:19.244Z"
   },
   {
    "source": "gdelt",
    "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=(%22BSE%20.%22%20OR%20%22Bajaj%20Auto%20.%22%20OR%20%22Bajaj%20Finance%20.%22%20OR%20%22Bajaj%20Finserv%20.%22%20OR%20%22Bharat%20Electronics%20.%22)%20sourcelang%3Aenglish&mode=artlist&maxrecords=250&format=json&sort=datedesc&timespan=14d",
    "status": 429,
    "ok": false,
-   "ms": 10226,
+   "ms": 11192,
    "message": "Too Many Requests Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngrams dataset: https://blog.gdeltproject.org/using-the-new-web-ngrams-dataset-to-find-relevant-coverage/. For trend analysis, please see our daily newslet",
-   "at": "2026-11-14T16:13:05.997Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=(%22BSE%20.%22%20OR%20%22Bajaj%20Auto%20.%22%20OR%20%22Bajaj%20Finance%20.%22%20OR%20%22Bajaj%20Finserv%20.%22%20OR%20%22Bharat%20Electronics%20.%22)%20sourcelang%3Aenglish&mode=artlist&maxrecords=250&format=json&sort=datedesc&timespan=14d",
-   "status": 429,
-   "ok": false,
-   "ms": 10641,
-   "message": "Too Many Requests Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngrams dataset: https://blog.gdeltproject.org/using-the-new-web-ngrams-dataset-to-find-relevant-coverage/. For trend analysis, please see our daily newslet",
-   "at": "2026-11-14T16:13:31.644Z"
+   "at": "2026-11-14T16:25:30.436Z"
   },
   {
    "source": "gdelt",
    "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=(%22Bharti%20Airtel%20.%22%20OR%20%22Cipla%20.%22%20OR%20%22Coal%20India%20.%22%20OR%20%22Dr.%20Reddy's%20Laboratories%20.%22%20OR%20%22Eicher%20Motors%20.%22)%20sourcelang%3Aenglish&mode=artlist&maxrecords=250&format=json&sort=datedesc&timespan=14d",
    "status": 429,
    "ok": false,
-   "ms": 9871,
+   "ms": 10451,
    "message": "Too Many Requests Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngrams dataset: https://blog.gdeltproject.org/using-the-new-web-ngrams-dataset-to-find-relevant-coverage/. For trend analysis, please see our daily newslet",
-   "at": "2026-11-14T16:13:41.515Z"
+   "at": "2026-11-14T16:26:11.265Z"
   },
   {
    "source": "gdelt",
    "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=(%22Bharti%20Airtel%20.%22%20OR%20%22Cipla%20.%22%20OR%20%22Coal%20India%20.%22%20OR%20%22Dr.%20Reddy's%20Laboratories%20.%22%20OR%20%22Eicher%20Motors%20.%22)%20sourcelang%3Aenglish&mode=artlist&maxrecords=250&format=json&sort=datedesc&timespan=14d",
    "status": 429,
    "ok": false,
-   "ms": 10005,
+   "ms": 9508,
    "message": "Too Many Requests Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngrams dataset: https://blog.gdeltproject.org/using-the-new-web-ngrams-dataset-to-find-relevant-coverage/. For trend analysis, please see our daily newslet",
-   "at": "2026-11-14T16:14:06.528Z"
+   "at": "2026-11-14T16:26:35.781Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=(%22Eternal%20.%22%20OR%20%22Grasim%20Industries%20.%22%20OR%20%22HCL%20Technologies%20.%22%20OR%20%22HDFC%20Bank%20.%22%20OR%20%22HDFC%20Life%20Insurance%20.%22)%20sourcelang%3Aenglish&mode=artlist&maxrecords=250&format=json&sort=datedesc&timespan=14d",
+   "status": 429,
+   "ok": false,
+   "ms": 8815,
+   "message": "Too Many Requests Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngrams dataset: https://blog.gdeltproject.org/using-the-new-web-ngrams-dataset-to-find-relevant-coverage/. For trend analysis, please see our daily newslet",
+   "at": "2026-11-14T16:26:44.596Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=(%22Eternal%20.%22%20OR%20%22Grasim%20Industries%20.%22%20OR%20%22HCL%20Technologies%20.%22%20OR%20%22HDFC%20Bank%20.%22%20OR%20%22HDFC%20Life%20Insurance%20.%22)%20sourcelang%3Aenglish&mode=artlist&maxrecords=250&format=json&sort=datedesc&timespan=14d",
+   "status": 429,
+   "ok": false,
+   "ms": 8359,
+   "message": "Too Many Requests Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngrams dataset: https://blog.gdeltproject.org/using-the-new-web-ngrams-dataset-to-find-relevant-coverage/. For trend analysis, please see our daily newslet",
+   "at": "2026-11-14T16:27:07.963Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=(%22Hindalco%20Industries%20.%22%20OR%20%22Hindustan%20Unilever%20.%22%20OR%20%22ICICI%20Bank%20.%22%20OR%20%22ITC%20.%22%20OR%20%22Infosys%20.%22)%20sourcelang%3Aenglish&mode=artlist&maxrecords=250&format=json&sort=datedesc&timespan=14d",
+   "status": 429,
+   "ok": false,
+   "ms": 9992,
+   "message": "Too Many Requests Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngrams dataset: https://blog.gdeltproject.org/using-the-new-web-ngrams-dataset-to-find-relevant-coverage/. For trend analysis, please see our daily newslet",
+   "at": "2026-11-14T16:27:17.955Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=(%22Hindalco%20Industries%20.%22%20OR%20%22Hindustan%20Unilever%20.%22%20OR%20%22ICICI%20Bank%20.%22%20OR%20%22ITC%20.%22%20OR%20%22Infosys%20.%22)%20sourcelang%3Aenglish&mode=artlist&maxrecords=250&format=json&sort=datedesc&timespan=14d",
+   "status": 429,
+   "ok": false,
+   "ms": 9674,
+   "message": "Too Many Requests Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngrams dataset: https://blog.gdeltproject.org/using-the-new-web-ngrams-dataset-to-find-relevant-coverage/. For trend analysis, please see our daily newslet",
+   "at": "2026-11-14T16:27:42.630Z"
   },
   {
    "source": "gnews",
-   "url": "https://gnews.io/api/v4/search?q=%22Adani%20Ports%20and%20Special%20Economic%20Zone%20.%22&lang=en&country=in&max=10&sortby=publishedAt&apikey=***",
-   "status": 429,
+   "url": "https://gnews.io/api/v4/search?q=%22Adani%20Enterprises%20.%22&lang=en&country=in&max=10&sortby=publishedAt&apikey=***",
+   "status": 403,
    "ok": false,
-   "ms": 77,
-   "message": "Too Many Requests {\"errors\":[\"You sent too many requests per second, so this request was blocked. Wait 1 second, then retry more slowly: the rate limit of each plan is on https://docs.gnews.io/error-handling\"]}",
-   "at": "2026-11-14T16:14:07.806Z"
+   "ms": 133,
+   "message": "Forbidden {\"errors\":[\"Your daily quota of 100 requests is used up. The quota resets at 00:00 UTC. Upgrade to a plan with a higher daily quota: https://gnews.io/pricing\"]}",
+   "at": "2026-11-14T16:27:42.764Z"
   },
   {
    "source": "gemini",
    "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
    "status": 503,
    "ok": false,
-   "ms": 2858,
+   "ms": 1316,
    "message": "Service Unavailable { \"error\": { \"code\": 503, \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\", \"status\": \"UNAVAILABLE\" } }",
-   "at": "2026-11-14T16:15:37.862Z"
+   "at": "2026-11-14T16:31:53.083Z"
   },
   {
    "source": "gemini",
    "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
    "status": 503,
    "ok": false,
-   "ms": 2448,
+   "ms": 1341,
    "message": "Service Unavailable { \"error\": { \"code\": 503, \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\", \"status\": \"UNAVAILABLE\" } }",
-   "at": "2026-11-14T16:15:43.952Z"
+   "at": "2026-11-14T16:32:06.109Z"
   },
   {
    "source": "gemini",
    "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
    "status": 503,
    "ok": false,
-   "ms": 1702,
+   "ms": 3448,
    "message": "Service Unavailable { \"error\": { \"code\": 503, \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\", \"status\": \"UNAVAILABLE\" } }",
-   "at": "2026-11-14T16:16:22.205Z"
-  },
-  {
-   "source": "gemini",
-   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
-   "status": 503,
-   "ok": false,
-   "ms": 2280,
-   "message": "Service Unavailable { \"error\": { \"code\": 503, \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\", \"status\": \"UNAVAILABLE\" } }",
-   "at": "2026-11-14T16:18:52.281Z"
+   "at": "2026-11-14T16:33:06.716Z"
   }
  ],
  "log": [
-  "Run #8 — model gemini-3.5-flash-lite, AI on, FRED on",
+  "Run #9 — model gemini-3.5-flash-lite, AI on, FRED on",
   "Universe: 50 NIFTY 50 constituents from NSE index file",
   "Prices: 0 new session(s) added; latest 2026-11-13",
   "Prices ready (latest 2026-11-13, backfill complete)",
   "Indices: 167 rows (2026-11-13); SENSEX 81592.45",
   "Macro: 11/11 indicators",
   "F&O: 43553 contracts (2026-11-13); header: TradDt,BizDt,Sgmt,Src,FinInstrmTp,FinInstrmId,ISIN,TckrSymb,SctySrs,XpryDt,FininstrmActlXpryDt,StrkPric,OptnTp,FinInstrmNm,OpnPric,HghPric,LwPric,ClsPric,LastPr",
-  "INFY: SEC 20-F fundamentals FY2018/FY2017/FY2016 (USD)",
-  "HDFCBANK: SEC 20-F fundamentals FY2025/FY2024/FY2023/FY2022/FY2021 (INR)",
-  "ICICIBANK: SEC fetch failed — HTTP 404 <?xml version=\"1.0\" encoding=\"UTF-8\"?> <Error><Code>NoSuchKey</Code><Message>The specified key does not exist.<",
-  "DRREDDY: SEC 20-F fundamentals FY2025/FY2024/FY2023/FY2022/FY2021 (INR)",
+  "Market news failed: HTTP 429 Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngrams dataset:",
+  "INFY: SEC 20-F fundamentals FY2025/FY2024/FY2023/FY2022/FY2021 (USD)",
   "ADANIENT: fundamentals failed — HTTP 429 { \"error\": { \"code\": 429, \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, ",
   "Fundamentals refreshed for 0 companies",
   "GDELT batch 1 failed: HTTP 429 Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngrams dataset:",
-  "GDELT batch 2 failed: HTTP 429 Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngrams dataset:",
   "GDELT batch 3 failed: HTTP 429 Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngrams dataset:",
-  "GDELT batch 4 failed: news time budget reached",
-  "GDELT batch 5 failed: news time budget reached",
+  "GDELT batch 4 failed: HTTP 429 Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngrams dataset:",
+  "GDELT batch 5 failed: HTTP 429 Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngrams dataset:",
   "GDELT batch 6 failed: news time budget reached",
   "GDELT batch 7 failed: news time budget reached",
   "GDELT batch 8 failed: news time budget reached",
@@ -258,14 +282,15 @@
   "GDELT theme failed (\"renewable energy\" India (auction OR tar): news time budget reached",
   "GDELT theme failed (\"Indian rupee\" (dollar OR forex)): news time budget reached",
   "GDELT theme failed (\"foreign investors\" India (stocks OR equ): news time budget reached",
-  "News: 0 GDELT queries ok, 37 failed; 0 items assigned",
-  "GNews: 50 companies searched, 0 failed, 326 relevant articles",
+  "News: 1 GDELT queries ok, 36 failed; 3 items assigned",
+  "GNews quota reached after 0 companies",
+  "GNews: 0 companies searched, 1 failed, 0 relevant articles",
   "ADANIENT: short=HOLD, swing=HOLD, medium=HOLD, long=INSUFFICIENT DATA | conf 47 | 60 news | Google Gemini",
   "ADANIPORTS: short=STRONG BUY, swing=STRONG BUY, medium=BUY, long=INSUFFICIENT DATA | conf 47 | 46 news | Google Gemini",
   "APOLLOHOSP: short=BUY, swing=BUY, medium=BUY, long=INSUFFICIENT DATA | conf 47 | 60 news | Google Gemini",
   "ASIANPAINT: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 37 | 28 news | Google Gemini",
-  "AXISBANK: short=HOLD, swing=HOLD, medium=HOLD, long=INSUFFICIENT DATA | conf 47 | 60 news | deterministic template",
-  "BAJAJ-AUTO: short=HOLD, swing=HOLD, medium=HOLD, long=INSUFFICIENT DATA | conf 47 | 58 news | Google Gemini",
+  "AXISBANK: short=HOLD, swing=HOLD, medium=HOLD, long=INSUFFICIENT DATA | conf 47 | 60 news | Google Gemini",
+  "BAJAJ-AUTO: short=HOLD, swing=HOLD, medium=HOLD, long=INSUFFICIENT DATA | conf 47 | 59 news | Google Gemini",
   "BAJAJFINSV: short=HOLD, swing=HOLD, medium=HOLD, long=INSUFFICIENT DATA | conf 47 | 60 news | Google Gemini",
   "BAJFINANCE: short=BUY, swing=BUY, medium=BUY, long=INSUFFICIENT DATA | conf 47 | 60 news | Google Gemini",
   "BEL: short=HOLD, swing=HOLD, medium=HOLD, long=INSUFFICIENT DATA | conf 47 | 60 news | Google Gemini",
@@ -310,7 +335,7 @@
   "TMPV: short=SELL, swing=SELL, medium=SELL, long=INSUFFICIENT DATA | conf 47 | 10 news | Google Gemini",
   "TRENT: short=BUY, swing=BUY, medium=HOLD, long=INSUFFICIENT DATA | conf 47 | 10 news | Google Gemini",
   "ULTRACEMCO: short=STRONG BUY, swing=STRONG BUY, medium=BUY, long=INSUFFICIENT DATA | conf 47 | 9 news | Google Gemini",
-  "NSE feeds: announcements: Online_announcements.xml (1342 items); financialResults: Financial_Results.xml (3 items); boardMeetings: Board_Meetings.xml (10 items); corporateActions: Corporate_action.xml (39 items); annualReports: Annual_Reports.xml (20 items)"
+  "NSE feeds: announcements: Online_announcements.xml (1354 items); financialResults: Financial_Results.xml (3 items); boardMeetings: Board_Meetings.xml (10 items); corporateActions: Corporate_action.xml (39 items); annualReports: Annual_Reports.xml (20 items)"
  ],
- "minutes": 9.29
+ "minutes": 9.68
 }
