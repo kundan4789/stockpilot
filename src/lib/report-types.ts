@@ -59,5 +59,6 @@ export interface ResearchReport {
   narrativeValidation: string[];
   sources: SourceRef[];
   disclaimer: string;
+  fo?: import("../../pipeline/fo").FoAnalysis | null;
   history?: { date: string; close: number | null; score: number | null; confidence: number; verdicts: Record<string, string> }[];
 }

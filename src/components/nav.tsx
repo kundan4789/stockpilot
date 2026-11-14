@@ -4,14 +4,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useAlertEvents } from "@/lib/local";
-import { Bell, BriefcaseBusiness, Filter, Globe2, Home, LineChart, MoreHorizontal, Search, Settings, Sparkles, Star, X } from "lucide-react";
+import { Bell, BriefcaseBusiness, CandlestickChart, Filter, Flame, Globe2, Home, LayoutGrid, LineChart, MoreHorizontal, Search, Settings, Sparkles, Star, X } from "lucide-react";
 import { cn } from "./ui";
 
 export const NAV = [
   { href: "/", label: "Home", icon: Home },
+  { href: "/picks", label: "Top Picks of the Week", icon: Flame },
   { href: "/search", label: "Search Stock", icon: Search },
   { href: "/research", label: "AI Research", icon: Sparkles },
   { href: "/market", label: "Market Overview", icon: LineChart },
+  { href: "/map", label: "Market Map", icon: LayoutGrid },
+  { href: "/fo", label: "F&O Analyst", icon: CandlestickChart },
   { href: "/screener", label: "Stock Screener", icon: Filter },
   { href: "/global", label: "Global Intelligence", icon: Globe2 },
   { href: "/watchlist", label: "Watchlist", icon: Star },
@@ -20,7 +23,7 @@ export const NAV = [
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
-const MOBILE_PRIMARY = ["/", "/search", "/research", "/watchlist"];
+const MOBILE_PRIMARY = ["/", "/picks", "/search", "/research"];
 
 const active = (path: string, href: string) => (href === "/" ? path === "/" : path.startsWith(href));
 
@@ -70,7 +73,7 @@ export function MobileNav() {
         {primary.map(({ href, label, icon: Icon }) => (
           <Link key={href} href={href} className={cn("flex flex-col items-center gap-1 py-2 text-[10px]", active(path, href) ? "text-accent" : "text-muted")}>
             <Icon className="h-5 w-5" />
-            {label.split(" ")[0]}
+            {href === "/picks" ? "Picks" : label.split(" ")[0]}
           </Link>
         ))}
         <button onClick={() => setOpen(true)} className="flex flex-col items-center gap-1 py-2 text-[10px] text-muted">

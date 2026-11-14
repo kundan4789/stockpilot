@@ -44,7 +44,7 @@ async function throttle(source: string) {
 
 export interface FetchOpts {
   source: string;
-  as?: "json" | "text";
+  as?: "json" | "text" | "binary";
   headers?: Record<string, string>;
   method?: "GET" | "POST";
   body?: string;
@@ -77,7 +77,7 @@ export async function fetchSource<T = unknown>(url: string, o: FetchOpts): Promi
         if (res.status === 429 || res.status >= 500) throw new HttpError(res.status, url);
         throw Object.assign(new HttpError(res.status, url), { fatal: true });
       }
-      const data = (o.as === "text" ? await res.text() : await res.json()) as T;
+      const data = (o.as === "text" ? await res.text() : o.as === "binary" ? await res.arrayBuffer() : await res.json()) as T;
       httpLog.push({ source: o.source, url: redact(url), status: res.status, ok: true, ms: Date.now() - t0, at: new Date().toISOString() });
       const v = { data, cached: false, retrievedAt: new Date().toISOString() };
       if (o.cache !== false) cache.set(key, v);

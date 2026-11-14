@@ -18,6 +18,8 @@ import { fetchSensex } from "./bse";
 import { SECTOR_INDEX } from "./fundamentals";
 import { getAIProvider } from "./gemini";
 import { refreshFundamentals } from "./fundamentals-ai";
+import { analyzeFo, fetchFo, finalizeStance, type FoAnalysis } from "./fo";
+import { computeSignals } from "../src/lib/analysis/signals";
 import { loadUniverse, syncPrices } from "./prices";
 import { dataPath, loadState, readJson, saveState, sitePath, writeJson } from "./store";
 
@@ -30,6 +32,12 @@ const log: string[] = [];
 const say = (s: string) => {
   log.push(s);
   console.log(`[${((Date.now() - t0) / 1000).toFixed(0)}s] ${s}`);
+};
+const ret = (c: import("../src/lib/types").Candle[], n: number) => (c.length > n ? ((c[c.length - 1].close - c[c.length - 1 - n].close) / c[c.length - 1 - n].close) * 100 : null);
+const volRatio = (c: import("../src/lib/types").Candle[]) => {
+  if (c.length < 55) return null;
+  const avg = (a: number[]) => a.reduce((x, y) => x + y, 0) / a.length;
+  return avg(c.slice(-5).map((x) => x.volume)) / avg(c.slice(-55, -5).map((x) => x.volume));
 };
 const rnd = (x: number | null | undefined) => (x == null ? null : Math.round(x * 100) / 100);
 
@@ -60,6 +68,20 @@ async function main() {
   const [fred, wb, imf] = await Promise.all([fetchFred(), fetchWorldBank(), fetchImf()]);
   const macro: (MacroIndicator & { prev?: number | null })[] = [...fred.items, ...wb, ...imf];
   say(`Macro: ${macro.filter((m) => m.status === "ok").length}/${macro.length} indicators${fred.error ? ` (${fred.error})` : ""}`);
+
+  // 3b. F&O bhavcopy for the latest session
+  let fo: Awaited<ReturnType<typeof fetchFo>> = null;
+  if (state.lastPriceDate) {
+    fo = await fetchFo(new Date(state.lastPriceDate + "T00:00:00Z")).catch((e) => (say(`F&O fetch failed: ${(e as Error).message}`), null));
+    say(fo ? `F&O: ${fo.rows.length} contracts (${fo.rows[0]?.date}); header: ${fo.header.slice(0, 160)}` : "F&O: bhavcopy not available for the latest session");
+  }
+  const foIndex = (sym: string) => {
+    if (!fo) return null;
+    const a = analyzeFo(sym, fo.rows, fo.url, true);
+    const row = indexRows.find((r) => r.name === (sym === "NIFTY" ? "NIFTY 50" : "NIFTY BANK"));
+    return a ? finalizeStance(a, row?.changePct ?? null, row?.close ?? null) : null;
+  };
+  const foIndices = { NIFTY: foIndex("NIFTY"), BANKNIFTY: foIndex("BANKNIFTY") };
 
   // 4. Market news
   const marketNews = await fetchMarketNews().catch((e) => (say(`Market news failed: ${(e as Error).message}`), [] as NewsItem[]));
@@ -92,7 +114,7 @@ async function main() {
     }
     const extraEvents = adjustmentEvents.get(company.symbol) ?? [];
     try {
-      const rep = await research(company, universe, prices, indexRows, idx?.value.url ?? null, idx?.value.retrievedAt ?? null, macro, extraEvents, ai);
+      const rep = await research(company, universe, prices, indexRows, idx?.value.url ?? null, idx?.value.retrievedAt ?? null, macro, extraEvents, ai, fo);
       reports.push(rep);
       await writeJson(sitePath("reports", `${company.symbol}.json`), rep);
       say(`${company.symbol}: ${rep.recommendations.map((r) => `${r.horizon}=${r.verdict}`).join(", ")} | conf ${rep.confidence} | ${rep.news.length} news | ${rep.narrativeSource.split(" (")[0]}`);
@@ -127,6 +149,7 @@ async function main() {
     macro,
     movers: { date: state.lastPriceDate, universe: "NIFTY 50", gainers: movers.filter((m) => m.changePct > 0).slice(0, 8), losers: movers.filter((m) => m.changePct < 0).reverse().slice(0, 8), count: movers.length },
     news: marketNews.slice(0, 20),
+    fo: { date: fo?.rows[0]?.date ?? null, sourceUrl: fo?.url ?? null, indices: foIndices },
   });
   await writeJson(
     sitePath("stocks.json"),
@@ -143,10 +166,45 @@ async function main() {
         components: r.components.map((c) => ({ key: c.key, score: c.score, coverage: c.coverage })),
         recommendations: r.recommendations.map((x) => ({ horizon: x.horizon, verdict: x.verdict, score: x.score, confidence: x.confidence })),
         researchScore: r.researchScore, confidence: r.confidence, generatedAt: r.generatedAt,
+        return1w: ret(r.candles, 5), return1m: r.technical.return1m, volRatio: volRatio(r.candles),
+        fo: r.fo ? { stance: r.fo.stance, stanceScore: r.fo.stanceScore, buildup: r.fo.futures?.buildup ?? null, oiChangePct: r.fo.futures?.oiChangePct ?? null, pcr: r.fo.options?.pcr ?? null, maxPain: r.fo.options?.maxPain ?? null, support: r.fo.levels.support, resistance: r.fo.levels.resistance, basisPct: r.fo.futures?.basisPct ?? null } : null,
+        signal: (() => { const s = computeSignals(r.candles); return { state: s.current.state, since: s.current.since, last: s.current.lastSignal, winRate: s.stats.winRate, trades: s.stats.trades, avgReturn: s.stats.avgReturn }; })(),
         highImpactNews: r.news.filter((n) => n.impact === "high").slice(0, 3).map((n) => ({ headline: n.headline, url: n.url, sentiment: n.sentiment, publishedAt: n.publishedAt })),
       };
     }),
   );
+  // Weekly picks (transparent ranking rules, recomputed daily)
+  const pick = (r: ResearchReport) => {
+    const sw = r.recommendations.find((x) => x.horizon === "swing")!;
+    const sig = computeSignals(r.candles);
+    const w1 = ret(r.candles, 5);
+    const comp = (sw.score ?? 50) + 0.2 * (r.fo?.stanceScore ?? 0) + (sig.current.state === "in-trade" ? 5 : 0) + (r.technical.condition === "overbought" ? -5 : 0);
+    const why: string[] = [`Swing verdict ${sw.verdict} (score ${sw.score ?? "n/a"}, confidence ${sw.confidence})`];
+    if (r.fo) why.push(`F&O ${r.fo.stance}${r.fo.futures ? ` — ${r.fo.futures.buildup}` : ""}${r.fo.options?.pcr != null ? `, PCR ${r.fo.options.pcr.toFixed(2)}` : ""}`);
+    if (sig.current.state === "in-trade") why.push(`Chart BUY signal active since ${sig.current.since}`);
+    else if (sig.current.lastSignal?.type === "SELL") why.push(`Last chart signal SELL on ${sig.current.lastSignal.date}`);
+    if (w1 != null) why.push(`1-week return ${w1 >= 0 ? "+" : ""}${w1.toFixed(2)}%`);
+    const lv = r.recommendations.find((x) => x.horizon === "swing")!.levels;
+    return { symbol: r.company.symbol, name: r.company.name, sector: r.company.sector ?? null, close: r.price.lastClose, verdict: sw.verdict, score: sw.score, confidence: sw.confidence, composite: Math.round(comp), return1w: w1, volRatio: volRatio(r.candles), foStance: r.fo?.stance ?? null, why, levels: lv.actionable ? { entryLow: lv.entryLow, entryHigh: lv.entryHigh, target: lv.target, stopLoss: lv.stopLoss, riskReward: lv.riskReward } : null };
+  };
+  const all = reports.map(pick);
+  await writeJson(sitePath("picks.json"), {
+    generatedAt: new Date().toISOString(),
+    asOf: state.lastPriceDate,
+    rules: [
+      "Composite = swing-horizon research score + 0.2 × F&O stance score (−100…+100) + 5 if a chart BUY signal is active − 5 if RSI is overbought.",
+      "Best buys: swing verdict BUY or STRONG BUY, highest composite first. Best sells: swing verdict SELL or STRONG SELL, or HOLD with bearish F&O and a bearish trend — lowest composite first.",
+      "Trending: biggest 1-week moves with 5-day volume at least equal to the 50-day average.",
+      "These are research candidates for the coming week, not guaranteed outcomes.",
+    ],
+    bestBuys: all.filter((p) => p.verdict === "BUY" || p.verdict === "STRONG BUY").sort((a, b) => b.composite - a.composite).slice(0, 5),
+    bestSells: all.filter((p) => p.verdict === "SELL" || p.verdict === "STRONG SELL" || (p.verdict === "HOLD" && p.foStance === "bearish" && reports.find((r) => r.company.symbol === p.symbol)?.technical.trend === "bearish")).sort((a, b) => a.composite - b.composite).slice(0, 5),
+    trendingUp: all.filter((p) => p.return1w != null && p.return1w > 0 && (p.volRatio ?? 0) >= 1).sort((a, b) => b.return1w! - a.return1w!).slice(0, 6),
+    trendingDown: all.filter((p) => p.return1w != null && p.return1w < 0 && (p.volRatio ?? 0) >= 1).sort((a, b) => a.return1w! - b.return1w!).slice(0, 6),
+    longBuildup: reports.filter((r) => r.fo?.futures?.buildup === "Long build-up").sort((a, b) => (b.fo!.futures!.oiChangePct ?? 0) - (a.fo!.futures!.oiChangePct ?? 0)).slice(0, 6).map((r) => ({ symbol: r.company.symbol, oiChangePct: r.fo!.futures!.oiChangePct, changePct: r.price.changePct })),
+    shortBuildup: reports.filter((r) => r.fo?.futures?.buildup === "Short build-up").sort((a, b) => (b.fo!.futures!.oiChangePct ?? 0) - (a.fo!.futures!.oiChangePct ?? 0)).slice(0, 6).map((r) => ({ symbol: r.company.symbol, oiChangePct: r.fo!.futures!.oiChangePct, changePct: r.price.changePct })),
+  });
+
   await writeJson(sitePath("meta.json"), {
     generatedAt: new Date().toISOString(),
     lastPriceDate: state.lastPriceDate,
@@ -173,6 +231,7 @@ async function research(
   macro: MacroIndicator[],
   extraEvents: CorporateEvent[],
   ai: ReturnType<typeof getAIProvider>,
+  fo: Awaited<ReturnType<typeof fetchFo>>,
 ): Promise<ResearchReport> {
   const steps: StepStatus[] = [{ step: "Identify company", status: "ok", detail: `${company.name} (NSE: ${company.symbol}${company.sector ? `, ${company.sector}` : ""})`, source: "NSE NIFTY 50 constituents file" }];
   const sources: SourceRef[] = [];
@@ -215,6 +274,18 @@ async function research(
   // Technical
   const technical = analyzeTechnicals(candles);
   steps.push({ step: "Technical indicators", status: technical.score != null ? "ok" : "unavailable", detail: technical.score != null ? `${technical.bars} bars; trend ${technical.trend}; score ${technical.score}` : technical.scoreExplanation[0] });
+
+  // F&O analyst view
+  let foView: FoAnalysis | null = null;
+  if (fo) {
+    const a = analyzeFo(company.symbol, fo.rows, fo.url);
+    if (a) foView = finalizeStance(a, last && prev ? ((last.close - prev.close) / prev.close) * 100 : null, last?.close ?? null);
+  }
+  steps.push({ step: "F&O analysis", status: foView ? "ok" : "unavailable", detail: foView ? `${foView.futures?.buildup ?? "no futures"}; PCR ${foView.options?.pcr?.toFixed(2) ?? "n/a"}; stance ${foView.stance}` : "Stock not in today's F&O bhavcopy or file unavailable", source: "NSE F&O UDiFF bhavcopy" });
+  if (foView) sources.push({ id: "fo", label: "NSE F&O bhavcopy (UDiFF)", url: foView.sourceUrl, period: foView.date });
+
+  // Chart signals (rule-based, back-tested)
+  const sig = computeSignals(candles);
 
   // Fundamentals
   let derivedPe: ResearchReport["fundamentals"]["derivedPe"] = null;
@@ -279,6 +350,10 @@ async function research(
   const positive: string[] = [];
   const negative: string[] = [];
   const risks: string[] = [];
+  if (foView?.stance === "bullish") positive.push(`F&O: ${foView.reasons[0]}`);
+  if (foView?.stance === "bearish") negative.push(`F&O: ${foView.reasons[0]}`);
+  if (sig.current.state === "in-trade" && sig.current.since) positive.push(`Trend-following BUY signal active since ${sig.current.since} (entry ${sig.current.entry?.toFixed(2)}; trailing stop ${sig.current.trailingStop?.toFixed(2)}).`);
+  else if (sig.current.lastSignal?.type === "SELL" && last && daysBetween(sig.current.lastSignal.date, new Date(last.date + "T00:00:00Z")) <= 20) negative.push(`Trend-following SELL signal on ${sig.current.lastSignal.date}: ${sig.current.lastSignal.reason}.`);
   if (technical.potentialBreakout) positive.push("Price is within 2% of resistance or near its 52-week high with a non-bearish trend — potential breakout setup.");
   if (technical.trend === "bullish") positive.push("Bullish trend structure: close above a rising 50-day average with positive MACD histogram.");
   if (technical.potentialBreakdown) negative.push("Price is within 2% of support or near its 52-week low — potential breakdown setup.");
@@ -315,6 +390,8 @@ async function research(
     news: news.slice(0, 25).map((n, i) => ({ id: `news:${i}`, headline: n.headline, publisher: n.publisher, date: n.publishedAt.slice(0, 10), sentiment: n.sentiment, relevance: n.relevance, impact: n.impact, category: n.category, why: n.evidence.split(" (matched")[0] })),
     macro: macro.filter((m) => m.status === "ok").map((m) => ({ id: `macro:${m.id}`, name: m.name, value: m.value, date: m.date, unit: m.unit })),
     verdicts: recommendations.map((r) => ({ horizon: r.horizon, verdict: r.verdict, score: r.score, confidence: r.confidence })),
+    fo: foView ? { stance: foView.stance, buildup: foView.futures?.buildup, pcr: rnd(foView.options?.pcr), maxPain: foView.options?.maxPain, support: foView.levels.support, resistance: foView.levels.resistance, reasons: foView.reasons } : "unavailable",
+    chartSignal: { state: sig.current.state, since: sig.current.since, lastSignal: sig.current.lastSignal, backtest: { trades: sig.stats.trades, winRate: rnd(sig.stats.winRate), avgReturn: rnd(sig.stats.avgReturn) } },
     catalysts: { positive, negative },
     risks,
   };
@@ -372,6 +449,7 @@ async function research(
     sources,
     disclaimer: DISCLAIMER,
     history,
+    fo: foView,
   } as ResearchReport;
 }
 

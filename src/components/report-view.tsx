@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { FoCard } from "./fo-card";
+import { SignalPanel, StopLossTool, useSignals, type PlanLines } from "./trade-guide";
 import { Check, ExternalLink, Star } from "lucide-react";
 import { useJson } from "@/lib/data";
 import { useWatchlist, useWeights, isCustomWeights } from "@/lib/local";
@@ -94,14 +96,21 @@ function Report({ rep, history, custom }: { rep: ResearchReport; history: Hist; 
   const sources = rep.sources;
   const N = rep.narrative;
   const medium = rep.recommendations.find((r) => r.horizon === "medium");
+  const [plan, setPlan] = useState<PlanLines | null>(null);
+  const sig = useSignals(rep.candles);
   const chartLevels = useMemo(() => {
+    if (plan?.stop) return [
+      { price: plan.entry!, label: "Your entry", color: "#60a5fa" },
+      { price: plan.target!, label: "Your target", color: "#22c55e" },
+      { price: plan.stop, label: "Your stop-loss", color: "#ef4444" },
+    ];
     const l = rep.recommendations.find((r) => r.horizon === "swing")?.levels;
     if (!l?.actionable) return [];
     return [
       { price: l.target!, label: "Swing target", color: "#22c55e" },
       { price: l.stopLoss!, label: "Swing stop", color: "#ef4444" },
     ];
-  }, [rep]);
+  }, [rep, plan]);
   const addWatch = () => {
     if (!onList) setWatchlist([...watchlist, { symbol: c.symbol, addedAt: new Date().toISOString(), buyPrice: null, quantity: null, target: null, stopLoss: null, notes: null }]);
   };
@@ -257,8 +266,14 @@ function Report({ rep, history, custom }: { rep: ResearchReport; history: Hist; 
 
       {/* 3 Price history */}
       <Card title="Price history" subtitle={`${rep.price.bars} daily bars · ${rep.price.adjustmentNote}`}>
-        {rep.candles.length ? <PriceChart candles={rep.candles} levels={chartLevels} /> : <Unavailable what="Price history" why="History is still being collected by the daily update." />}
+        {rep.candles.length ? <PriceChart candles={rep.candles} levels={chartLevels} signals={sig.signals} /> : <Unavailable what="Price history" why="History is still being collected by the daily update." />}
       </Card>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <SignalPanel sig={sig} lastClose={rep.price.lastClose} />
+        <StopLossTool technical={t} lastClose={rep.price.lastClose} onPlan={setPlan} />
+      </div>
+      <FoCard fo={rep.fo} />
 
       {/* 5 Technical */}
       <Card title="Technical analysis" subtitle={t.asOf ? `As of ${t.asOf}` : undefined}>
@@ -314,7 +329,7 @@ function Report({ rep, history, custom }: { rep: ResearchReport; history: Hist; 
       <div className="grid gap-4 lg:grid-cols-2">
         <Card title="Fundamental analysis" subtitle={rep.fundamentals.result.score != null ? `Score ${rep.fundamentals.result.score}/100 · coverage ${Math.round(rep.fundamentals.result.coverage * 100)}%` : undefined}>
           {rep.fundamentals.result.score == null && !fin ? (
-            <Unavailable what="Fundamental data" why="No financial statements stored for this company. Import them in Settings → Data import with their source; nothing is estimated." />
+            <Unavailable what="Fundamental data" why="Not yet collected for this company — fundamentals are refreshed gradually (up to 25 companies per daily run). Nothing is estimated." />
           ) : (
             <>
               <table className="w-full text-xs">
@@ -339,7 +354,7 @@ function Report({ rep, history, custom }: { rep: ResearchReport; history: Hist; 
         <Card title="Financial statements" subtitle={fin ? <>{fin.currency} · retrieved {fin.retrievedAt.slice(0, 10)}</> : undefined}>
           {fin?.note && <Notice className="mb-2">{fin.note}</Notice>}
           {!fin ? (
-            <Unavailable what="Financial statements" why="Import annual/quarterly figures in Settings." />
+            <Unavailable what="Financial statements" why="Not yet collected for this company." />
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
@@ -371,7 +386,7 @@ function Report({ rep, history, custom }: { rep: ResearchReport; history: Hist; 
       {/* 7 Institutional */}
       <Card title="Institutional activity" subtitle={sh ? `${sh.source} · latest ${sh.history[0]?.period}` : undefined}>
         {!sh ? (
-          <Unavailable what="Shareholding data" why="Import shareholding (promoter / FII / DII / MF / pledge) in Settings." />
+          <Unavailable what="Shareholding data" why="Not yet collected for this company." />
         ) : (
           <div className="grid gap-4 md:grid-cols-2">
             <div className="overflow-x-auto">

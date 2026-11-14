@@ -44,6 +44,21 @@ export interface StockRow {
   recommendations: Pick<HorizonRecommendation, "horizon" | "verdict" | "score" | "confidence">[];
   researchScore: number | null; confidence: number; generatedAt: string;
   highImpactNews: { headline: string; url: string; sentiment: string; publishedAt: string }[];
+  return1w: number | null; return1m: number | null; volRatio: number | null;
+  fo: { stance: string; stanceScore: number; buildup: string | null; oiChangePct: number | null; pcr: number | null; maxPain: number | null; support: number | null; resistance: number | null; basisPct: number | null } | null;
+  signal: { state: string; since: string | null; last: { date: string; type: string; price: number; reason: string } | null; winRate: number | null; trades: number; avgReturn: number | null };
+}
+
+export interface WeeklyPick {
+  symbol: string; name: string; sector: string | null; close: number | null; verdict: string; score: number | null; confidence: number; composite: number;
+  return1w: number | null; volRatio: number | null; foStance: string | null; why: string[];
+  levels: { entryLow: number | null; entryHigh: number | null; target: number | null; stopLoss: number | null; riskReward: number | null } | null;
+}
+export interface Picks {
+  generatedAt: string; asOf: string | null; rules: string[];
+  bestBuys: WeeklyPick[]; bestSells: WeeklyPick[]; trendingUp: WeeklyPick[]; trendingDown: WeeklyPick[];
+  longBuildup: { symbol: string; oiChangePct: number | null; changePct: number | null }[];
+  shortBuildup: { symbol: string; oiChangePct: number | null; changePct: number | null }[];
 }
 
 export interface IndexRow { name: string; date: string; close: number; changePct: number | null; pe: number | null }
@@ -57,6 +72,7 @@ export interface MarketData {
   macro: MacroIndicator[];
   movers: { date: string | null; universe: string; gainers: Mover[]; losers: Mover[]; count: number };
   news: NewsItem[];
+  fo?: { date: string | null; sourceUrl: string | null; indices: Record<string, import("../../pipeline/fo").FoAnalysis | null> };
 }
 
 export interface Meta {

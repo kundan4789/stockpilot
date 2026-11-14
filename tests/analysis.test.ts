@@ -145,3 +145,24 @@ describe("scoring model", () => {
     expect(confidenceScore(1, 1, true).confidence).toBe(100);
   });
 });
+
+import { computeSignals, stopLossPlan } from "@/lib/analysis/signals";
+
+describe("signals & stop-loss", () => {
+  it("generates alternating BUY/SELL signals and consistent stats", () => {
+    const c = synthCandles(800, 100, 0.0008);
+    const r = computeSignals(c);
+    for (let i = 1; i < r.signals.length; i++) expect(r.signals[i].type).not.toBe(r.signals[i - 1].type);
+    if (r.signals.length) expect(r.signals[0].type).toBe("BUY");
+    expect(r.stats.trades).toBe(r.trades.filter((t) => !t.open).length);
+    if (r.stats.winRate != null) expect(r.stats.winRate).toBeGreaterThanOrEqual(0);
+  });
+  it("stop-loss plan sizes position by risk", () => {
+    const p = stopLossPlan({ method: "percent", entry: 100, atr: 2, supports: [], percent: 5, atrMult: 2, capital: 100000, riskPct: 1, rr: 2 });
+    expect(p.stop).toBeCloseTo(95);
+    expect(p.qty).toBe(200); // ₹1,000 risk / ₹5 per share
+    expect(p.target).toBeCloseTo(110);
+    const s = stopLossPlan({ method: "support", entry: 100, atr: 2, supports: [97, 90], percent: 5, atrMult: 2, capital: 100000, riskPct: 1, rr: 2 });
+    expect(s.stop).toBeCloseTo(96.5);
+  });
+});

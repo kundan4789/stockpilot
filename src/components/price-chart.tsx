@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { CandlestickSeries, ColorType, createChart, HistogramSeries, LineSeries, type IChartApi, type UTCTimestamp } from "lightweight-charts";
+import { CandlestickSeries, ColorType, createChart, createSeriesMarkers, HistogramSeries, LineSeries, type IChartApi, type SeriesMarker, type UTCTimestamp } from "lightweight-charts";
 import type { Candle } from "@/lib/types";
 import { sma } from "@/lib/analysis/indicators";
 import { cn } from "./ui";
@@ -19,11 +19,11 @@ const PERIODS: { k: string; days: number }[] = [
 
 const ts = (d: string) => (Date.parse(d + "T00:00:00Z") / 1000) as UTCTimestamp;
 
-export function PriceChart({ candles, levels }: { candles: Candle[]; levels?: { price: number; label: string; color: string }[] }) {
+export function PriceChart({ candles, levels, signals }: { candles: Candle[]; levels?: { price: number; label: string; color: string }[]; signals?: { date: string; type: "BUY" | "SELL"; price: number }[] }) {
   const el = useRef<HTMLDivElement>(null);
   const chart = useRef<IChartApi | null>(null);
   const [period, setPeriod] = useState("1Y");
-  const [overlays, setOverlays] = useState({ sma50: true, sma200: true });
+  const [overlays, setOverlays] = useState({ sma50: true, sma200: true, signals: true });
 
   const view = useMemo(() => {
     if (!candles.length) return { data: [] as Candle[], start: 0 };
@@ -58,12 +58,16 @@ export function PriceChart({ candles, levels }: { candles: Candle[]; levels?: { 
     };
     if (overlays.sma50) addSma(50, "#60a5fa");
     if (overlays.sma200) addSma(200, "#f59e0b");
+    if (overlays.signals && signals?.length) {
+      const m: SeriesMarker<UTCTimestamp>[] = signals.map((x) => ({ time: ts(x.date), position: x.type === "BUY" ? "belowBar" : "aboveBar", color: x.type === "BUY" ? "#22c55e" : "#ef4444", shape: x.type === "BUY" ? "arrowUp" : "arrowDown", text: x.type }));
+      createSeriesMarkers(s, m);
+    }
     for (const l of levels ?? []) s.createPriceLine({ price: l.price, color: l.color, lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: l.label });
     return () => {
       c.remove();
       chart.current = null;
     };
-  }, [candles, levels, overlays]);
+  }, [candles, levels, overlays, signals]);
 
   useEffect(() => {
     const c = chart.current;
@@ -88,6 +92,11 @@ export function PriceChart({ candles, levels }: { candles: Candle[]; levels?: { 
         <label className="ml-2 flex items-center gap-1 text-xs text-muted">
           <input type="checkbox" checked={overlays.sma200} onChange={(e) => setOverlays((o) => ({ ...o, sma200: e.target.checked }))} /> <span className="text-amber-400">SMA200</span>
         </label>
+        {signals && (
+          <label className="ml-2 flex items-center gap-1 text-xs text-muted">
+            <input type="checkbox" checked={overlays.signals} onChange={(e) => setOverlays((o) => ({ ...o, signals: e.target.checked }))} /> <span><span className="text-up">▲BUY</span>/<span className="text-down">▼SELL</span> signals</span>
+          </label>
+        )}
       </div>
       <div ref={el} className="h-[340px] w-full sm:h-[400px]" />
       <p className="mt-1 text-[10px] text-faint">End-of-day data. 1D shows the latest session (no free intraday feed). Periods longer than the stored history are disabled until the backfill job has run.</p>
