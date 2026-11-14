@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-14T13:52:23.055Z",
+ "generatedAt": "2026-11-14T15:05:50.650Z",
  "lastPriceDate": "2026-11-13",
  "backfill": {
   "done": true,
@@ -59,613 +59,627 @@
  ],
  "ai": "Google Gemini (gemini-3.5-flash-lite)",
  "usage": {
-  "nse": 7,
+  "nse": 8,
   "bse": 1,
   "fred": 8,
   "worldbank": 2,
   "imf": 1,
-  "gdelt": 190,
-  "gemini": 55
+  "gdelt": 106,
+  "gemini": 48
  },
- "requests": 264,
+ "requests": 174,
  "failures": [
   {
    "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22ITC%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22H-1B%22%20OR%20%22visa%20fees%22%20OR%20%22outsourcing%22%20policy%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
    "status": 429,
    "ok": false,
-   "ms": 8577,
+   "ms": 9651,
    "message": "Too Many Requests",
-   "at": "2026-11-14T13:28:23.932Z"
+   "at": "2026-11-14T14:44:20.662Z"
   },
   {
    "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22ITC%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 429,
-   "ok": false,
-   "ms": 8692,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:28:34.125Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22palm%20oil%22%20OR%20%22commodity%20prices%22%20FMCG%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 429,
-   "ok": false,
-   "ms": 9418,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:29:13.569Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22palm%20oil%22%20OR%20%22commodity%20prices%22%20FMCG%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 429,
-   "ok": false,
-   "ms": 9559,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:29:24.628Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Jio%20Financial%20Services%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 429,
-   "ok": false,
-   "ms": 8978,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:30:07.491Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Jio%20Financial%20Services%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 0,
-   "ok": false,
-   "ms": 10493,
-   "message": "fetch failed",
-   "at": "2026-11-14T13:30:19.485Z"
-  },
-  {
-   "source": "gemini",
-   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
-   "status": 503,
-   "ok": false,
-   "ms": 938,
-   "message": "Service Unavailable",
-   "at": "2026-11-14T13:30:20.430Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22JSW%20Steel%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 0,
-   "ok": false,
-   "ms": 10486,
-   "message": "fetch failed",
-   "at": "2026-11-14T13:30:41.052Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22JSW%20Steel%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 0,
-   "ok": false,
-   "ms": 10493,
-   "message": "fetch failed",
-   "at": "2026-11-14T13:30:53.047Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=China%20(steel%20OR%20%22property%20sector%22%20OR%20stimulus)%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 0,
-   "ok": false,
-   "ms": 10493,
-   "message": "fetch failed",
-   "at": "2026-11-14T13:31:03.540Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=China%20(steel%20OR%20%22property%20sector%22%20OR%20stimulus)%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 0,
-   "ok": false,
-   "ms": 10493,
-   "message": "fetch failed",
-   "at": "2026-11-14T13:31:15.535Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Kotak%20Mahindra%20Bank%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 0,
-   "ok": false,
-   "ms": 10486,
-   "message": "fetch failed",
-   "at": "2026-11-14T13:31:29.588Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Kotak%20Mahindra%20Bank%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 429,
-   "ok": false,
-   "ms": 11178,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:31:42.268Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Larsen%20%26%20Toubro%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 429,
-   "ok": false,
-   "ms": 11568,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:32:27.195Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Larsen%20%26%20Toubro%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 429,
-   "ok": false,
-   "ms": 11778,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:32:40.475Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22infrastructure%20spending%22%20India%20OR%20%22order%20inflow%22%20India%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 429,
-   "ok": false,
-   "ms": 11522,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:33:22.024Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Mahindra%20%26%20Mahindra%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 429,
-   "ok": false,
-   "ms": 10392,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:33:47.715Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Mahindra%20%26%20Mahindra%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 429,
-   "ok": false,
-   "ms": 10364,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:33:59.580Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22electric%20vehicle%22%20India%20(policy%20OR%20subsidy)%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 429,
-   "ok": false,
-   "ms": 11557,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:34:41.159Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22electric%20vehicle%22%20India%20(policy%20OR%20subsidy)%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 429,
-   "ok": false,
-   "ms": 10605,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:34:53.266Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22steel%20prices%22%20OR%20%22semiconductor%20shortage%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 429,
-   "ok": false,
-   "ms": 10713,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:35:33.995Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22steel%20prices%22%20OR%20%22semiconductor%20shortage%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 429,
-   "ok": false,
-   "ms": 10783,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:35:46.279Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Maruti%20Suzuki%20India%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 429,
-   "ok": false,
-   "ms": 9902,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:36:29.092Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22electric%20vehicle%22%20India%20(policy%20OR%20subsidy)%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 429,
-   "ok": false,
-   "ms": 9813,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:36:52.449Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22electric%20vehicle%22%20India%20(policy%20OR%20subsidy)%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 429,
-   "ok": false,
-   "ms": 10352,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:37:04.301Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22steel%20prices%22%20OR%20%22semiconductor%20shortage%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 429,
-   "ok": false,
-   "ms": 9942,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:37:44.266Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22steel%20prices%22%20OR%20%22semiconductor%20shortage%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 429,
-   "ok": false,
-   "ms": 10047,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:37:55.814Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Max%20Healthcare%20Institute%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 429,
-   "ok": false,
-   "ms": 9556,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:38:38.684Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22generic%20drug%22%20prices%20US%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 429,
-   "ok": false,
-   "ms": 11457,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:39:14.230Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22generic%20drug%22%20prices%20US%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 429,
-   "ok": false,
-   "ms": 11061,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:39:26.791Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Nestle%20India%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 429,
-   "ok": false,
-   "ms": 10486,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:40:09.980Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Nestle%20India%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 0,
-   "ok": false,
-   "ms": 10493,
-   "message": "fetch failed",
-   "at": "2026-11-14T13:40:21.973Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22palm%20oil%22%20OR%20%22commodity%20prices%22%20FMCG%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 0,
-   "ok": false,
-   "ms": 10493,
-   "message": "fetch failed",
-   "at": "2026-11-14T13:40:32.466Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22palm%20oil%22%20OR%20%22commodity%20prices%22%20FMCG%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 0,
-   "ok": false,
-   "ms": 10492,
-   "message": "fetch failed",
-   "at": "2026-11-14T13:40:44.460Z"
-  },
-  {
-   "source": "gemini",
-   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
-   "status": 503,
-   "ok": false,
-   "ms": 965,
-   "message": "Service Unavailable",
-   "at": "2026-11-14T13:40:45.429Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22coal%20prices%22%20OR%20%22power%20demand%22%20India%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 429,
-   "ok": false,
-   "ms": 10926,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:41:20.564Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22coal%20prices%22%20OR%20%22power%20demand%22%20India%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 429,
-   "ok": false,
-   "ms": 10543,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:41:32.607Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22renewable%20energy%22%20India%20(auction%20OR%20tariff%20OR%20policy)%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 429,
-   "ok": false,
-   "ms": 11155,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:42:13.778Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22renewable%20energy%22%20India%20(auction%20OR%20tariff%20OR%20policy)%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22H-1B%22%20OR%20%22visa%20fees%22%20OR%20%22outsourcing%22%20policy%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
    "status": 429,
    "ok": false,
    "ms": 9962,
    "message": "Too Many Requests",
-   "at": "2026-11-14T13:42:25.240Z"
+   "at": "2026-11-14T14:45:10.637Z"
   },
   {
    "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Oil%20%26%20Natural%20Gas%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 429,
-   "ok": false,
-   "ms": 10407,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:43:08.342Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Oil%20%26%20Natural%20Gas%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 429,
-   "ok": false,
-   "ms": 9877,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:43:19.720Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22refining%20margins%22%20OR%20%22petrochemical%20prices%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 429,
-   "ok": false,
-   "ms": 9699,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:43:59.447Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22renewable%20energy%22%20India%20(auction%20OR%20tariff%20OR%20policy)%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 429,
-   "ok": false,
-   "ms": 10691,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:45:02.275Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Reliance%20Industries%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 429,
-   "ok": false,
-   "ms": 2377,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:45:13.188Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Reliance%20Industries%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 429,
-   "ok": false,
-   "ms": 12063,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:45:28.375Z"
-  },
-  {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22SBI%20Life%20Insurance%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22H-1B%22%20OR%20%22visa%20fees%22%20OR%20%22outsourcing%22%20policy%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
    "status": 0,
    "ok": false,
-   "ms": 10486,
+   "ms": 10494,
    "message": "fetch failed",
-   "at": "2026-11-14T13:46:12.290Z"
+   "at": "2026-11-14T14:46:21.181Z"
   },
   {
    "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22SBI%20Life%20Insurance%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22generative%20AI%22%20(services%20OR%20outsourcing)%20deal%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
    "status": 0,
    "ok": false,
-   "ms": 10492,
+   "ms": 10494,
    "message": "fetch failed",
-   "at": "2026-11-14T13:46:24.282Z"
+   "at": "2026-11-14T14:46:31.675Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22generative%20AI%22%20(services%20OR%20outsourcing)%20deal%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
+   "status": 429,
+   "ok": false,
+   "ms": 10114,
+   "message": "Too Many Requests",
+   "at": "2026-11-14T14:47:01.790Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22generative%20AI%22%20(services%20OR%20outsourcing)%20deal%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
+   "status": 429,
+   "ok": false,
+   "ms": 9478,
+   "message": "Too Many Requests",
+   "at": "2026-11-14T14:47:51.278Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22generative%20AI%22%20(services%20OR%20outsourcing)%20deal%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
+   "status": 429,
+   "ok": false,
+   "ms": 9051,
+   "message": "Too Many Requests",
+   "at": "2026-11-14T14:49:00.386Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22palm%20oil%22%20OR%20%22commodity%20prices%22%20FMCG%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
+   "status": 429,
+   "ok": false,
+   "ms": 11095,
+   "message": "Too Many Requests",
+   "at": "2026-11-14T14:49:11.482Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22palm%20oil%22%20OR%20%22commodity%20prices%22%20FMCG%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
+   "status": 429,
+   "ok": false,
+   "ms": 12666,
+   "message": "Too Many Requests",
+   "at": "2026-11-14T14:49:44.149Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22palm%20oil%22%20OR%20%22commodity%20prices%22%20FMCG%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
+   "status": 0,
+   "ok": false,
+   "ms": 10494,
+   "message": "fetch failed",
+   "at": "2026-11-14T14:50:34.649Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22palm%20oil%22%20OR%20%22commodity%20prices%22%20FMCG%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
+   "status": 429,
+   "ok": false,
+   "ms": 9648,
+   "message": "Too Many Requests",
+   "at": "2026-11-14T14:51:44.338Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22rural%20demand%22%20India%20OR%20monsoon%20India%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
+   "status": 429,
+   "ok": false,
+   "ms": 9380,
+   "message": "Too Many Requests",
+   "at": "2026-11-14T14:51:53.718Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22renewable%20energy%22%20India%20(auction%20OR%20tariff%20OR%20policy)%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
+   "status": 429,
+   "ok": false,
+   "ms": 9621,
+   "message": "Too Many Requests",
+   "at": "2026-11-14T14:52:53.658Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22renewable%20energy%22%20India%20(auction%20OR%20tariff%20OR%20policy)%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
+   "status": 429,
+   "ok": false,
+   "ms": 9273,
+   "message": "Too Many Requests",
+   "at": "2026-11-14T14:53:22.945Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22renewable%20energy%22%20India%20(auction%20OR%20tariff%20OR%20policy)%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
+   "status": 429,
+   "ok": false,
+   "ms": 9332,
+   "message": "Too Many Requests",
+   "at": "2026-11-14T14:54:12.297Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22renewable%20energy%22%20India%20(auction%20OR%20tariff%20OR%20policy)%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
+   "status": 429,
+   "ok": false,
+   "ms": 11477,
+   "message": "Too Many Requests",
+   "at": "2026-11-14T14:55:23.831Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Indian%20rupee%22%20(dollar%20OR%20forex)%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
+   "status": 429,
+   "ok": false,
+   "ms": 10955,
+   "message": "Too Many Requests",
+   "at": "2026-11-14T14:55:34.786Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Indian%20rupee%22%20(dollar%20OR%20forex)%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
+   "status": 0,
+   "ok": false,
+   "ms": 10494,
+   "message": "fetch failed",
+   "at": "2026-11-14T14:56:05.296Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Indian%20rupee%22%20(dollar%20OR%20forex)%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
+   "status": 429,
+   "ok": false,
+   "ms": 8709,
+   "message": "Too Many Requests",
+   "at": "2026-11-14T14:56:54.025Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Indian%20rupee%22%20(dollar%20OR%20forex)%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
+   "status": 429,
+   "ok": false,
+   "ms": 7614,
+   "message": "Too Many Requests",
+   "at": "2026-11-14T14:58:01.696Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22foreign%20investors%22%20India%20(stocks%20OR%20equities%20OR%20FPI)%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
+   "status": 429,
+   "ok": false,
+   "ms": 8165,
+   "message": "Too Many Requests",
+   "at": "2026-11-14T14:58:09.861Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22foreign%20investors%22%20India%20(stocks%20OR%20equities%20OR%20FPI)%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
+   "status": 429,
+   "ok": false,
+   "ms": 9949,
+   "message": "Too Many Requests",
+   "at": "2026-11-14T14:58:39.826Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22foreign%20investors%22%20India%20(stocks%20OR%20equities%20OR%20FPI)%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
+   "status": 429,
+   "ok": false,
+   "ms": 8591,
+   "message": "Too Many Requests",
+   "at": "2026-11-14T14:59:28.454Z"
+  },
+  {
+   "source": "gdelt",
+   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22foreign%20investors%22%20India%20(stocks%20OR%20equities%20OR%20FPI)%20sourcelang%3Aenglish&mode=artlist&maxrecords=12&format=json&sort=datedesc&timespan=7d",
+   "status": 0,
+   "ok": false,
+   "ms": 10494,
+   "message": "fetch failed",
+   "at": "2026-11-14T15:00:39.005Z"
   },
   {
    "source": "gemini",
    "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
    "status": 503,
    "ok": false,
-   "ms": 1716,
+   "ms": 2098,
    "message": "Service Unavailable",
-   "at": "2026-11-14T13:46:26.004Z"
+   "at": "2026-11-14T15:00:43.026Z"
   },
   {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22State%20Bank%20of%20India%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 429,
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
    "ok": false,
-   "ms": 10009,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:46:44.842Z"
+   "ms": 1268,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:00:48.696Z"
   },
   {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22State%20Bank%20of%20India%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 429,
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
    "ok": false,
-   "ms": 9247,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:46:55.590Z"
+   "ms": 2013,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:00:55.942Z"
   },
   {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Sun%20Pharmaceutical%20Industries%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 429,
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
    "ok": false,
-   "ms": 9670,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:47:55.835Z"
+   "ms": 1548,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:01:01.977Z"
   },
   {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Sun%20Pharmaceutical%20Industries%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 429,
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
    "ok": false,
-   "ms": 10395,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:48:07.729Z"
+   "ms": 2341,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:01:15.772Z"
   },
   {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22generic%20drug%22%20prices%20US%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 429,
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
    "ok": false,
-   "ms": 9893,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:48:47.641Z"
+   "ms": 1655,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:01:21.584Z"
   },
   {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22generic%20drug%22%20prices%20US%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 429,
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
    "ok": false,
-   "ms": 9541,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:48:58.683Z"
+   "ms": 614,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:01:27.043Z"
   },
   {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Tata%20Consumer%20Products%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 429,
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
    "ok": false,
-   "ms": 10941,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:49:42.942Z"
+   "ms": 1989,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:01:34.919Z"
   },
   {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22palm%20oil%22%20OR%20%22commodity%20prices%22%20FMCG%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 429,
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
    "ok": false,
-   "ms": 9634,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:50:10.257Z"
+   "ms": 1253,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:01:40.681Z"
   },
   {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22palm%20oil%22%20OR%20%22commodity%20prices%22%20FMCG%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 429,
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
    "ok": false,
-   "ms": 12211,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:50:23.969Z"
+   "ms": 823,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:01:53.254Z"
   },
   {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Tata%20Steel%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 0,
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
    "ok": false,
-   "ms": 10487,
-   "message": "fetch failed",
-   "at": "2026-11-14T13:51:08.136Z"
+   "ms": 2433,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:02:07.863Z"
   },
   {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Tata%20Steel%20.%22%20sourcelang%3Aenglish&mode=artlist&maxrecords=40&format=json&sort=datedesc&timespan=30d",
-   "status": 429,
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
    "ok": false,
-   "ms": 11067,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:51:20.705Z"
+   "ms": 1327,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:02:13.255Z"
   },
   {
-   "source": "gdelt",
-   "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=China%20(steel%20OR%20%22property%20sector%22%20OR%20stimulus)%20sourcelang%3Aenglish&mode=artlist&maxrecords=15&format=json&sort=datedesc&timespan=7d",
-   "status": 429,
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
    "ok": false,
-   "ms": 10118,
-   "message": "Too Many Requests",
-   "at": "2026-11-14T13:52:00.850Z"
+   "ms": 2762,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:02:21.191Z"
+  },
+  {
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
+   "ok": false,
+   "ms": 744,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:02:51.675Z"
+  },
+  {
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
+   "ok": false,
+   "ms": 7664,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:03:05.095Z"
+  },
+  {
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
+   "ok": false,
+   "ms": 1987,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:03:13.599Z"
+  },
+  {
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
+   "ok": false,
+   "ms": 1172,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:03:19.283Z"
+  },
+  {
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
+   "ok": false,
+   "ms": 1010,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:03:25.622Z"
+  },
+  {
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
+   "ok": false,
+   "ms": 1285,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:03:32.397Z"
+  },
+  {
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
+   "ok": false,
+   "ms": 2368,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:03:39.981Z"
+  },
+  {
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
+   "ok": false,
+   "ms": 1247,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:03:45.357Z"
+  },
+  {
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
+   "ok": false,
+   "ms": 869,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:03:51.481Z"
+  },
+  {
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
+   "ok": false,
+   "ms": 985,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:03:58.098Z"
+  },
+  {
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
+   "ok": false,
+   "ms": 846,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:04:04.457Z"
+  },
+  {
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
+   "ok": false,
+   "ms": 1180,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:04:11.292Z"
+  },
+  {
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
+   "ok": false,
+   "ms": 3047,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:04:19.658Z"
+  },
+  {
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
+   "ok": false,
+   "ms": 652,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:04:23.764Z"
+  },
+  {
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
+   "ok": false,
+   "ms": 603,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:04:43.215Z"
+  },
+  {
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
+   "ok": false,
+   "ms": 3253,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:04:52.365Z"
+  },
+  {
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
+   "ok": false,
+   "ms": 1824,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:04:57.437Z"
+  },
+  {
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
+   "ok": false,
+   "ms": 2288,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:05:10.899Z"
+  },
+  {
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
+   "ok": false,
+   "ms": 878,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:05:15.988Z"
+  },
+  {
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
+   "ok": false,
+   "ms": 3045,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:05:31.159Z"
+  },
+  {
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
+   "ok": false,
+   "ms": 3189,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:05:37.801Z"
+  },
+  {
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
+   "ok": false,
+   "ms": 1483,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:05:42.596Z"
+  },
+  {
+   "source": "gemini",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+   "status": 503,
+   "ok": false,
+   "ms": 2946,
+   "message": "Service Unavailable",
+   "at": "2026-11-14T15:05:50.557Z"
   }
  ],
  "log": [
-  "Run #2 — model gemini-3.5-flash-lite, AI on, FRED on",
+  "Run #3 — model gemini-3.5-flash-lite, AI on, FRED on",
   "Universe: 50 NIFTY 50 constituents from NSE index file",
   "Prices: 0 new session(s) added; latest 2026-11-13",
   "Prices ready (latest 2026-11-13, backfill complete)",
   "Indices: 167 rows (2026-11-13); SENSEX 81592.45",
   "Macro: 11/11 indicators",
+  "F&O: 43553 contracts (2026-11-13); header: TradDt,BizDt,Sgmt,Src,FinInstrmTp,FinInstrmId,ISIN,TckrSymb,SctySrs,XpryDt,FininstrmActlXpryDt,StrkPric,OptnTp,FinInstrmNm,OpnPric,HghPric,LwPric,ClsPric,LastPr",
   "Market news failed: HTTP 429",
-  "ADANIENT: fundamentals failed — HTTP 429",
+  "GDELT batch 1 failed: GDELT: Your query was too short or too long.",
+  "GDELT batch 2 failed: fetch failed",
+  "GDELT batch 3 failed: HTTP 429",
+  "GDELT batch 4 failed: GDELT: Your query was too short or too long.",
+  "GDELT batch 5 failed: GDELT: Your query was too short or too long.",
+  "GDELT theme failed (\"steel prices\" OR \"iron ore\" OR \"alumini): GDELT: Queries containing OR'd terms must be surrounded by ().",
+  "GDELT theme failed (China (steel OR \"property sector\" OR sti): HTTP 429",
+  "GDELT theme failed (\"US FDA\" (India OR Indian) (warning OR a): HTTP 429",
+  "GDELT theme failed (\"generic drug\" prices US): HTTP 429",
+  "GDELT theme failed (\"Reserve Bank of India\" (repo OR rate OR): HTTP 429",
+  "GDELT theme failed (\"India\" (\"credit growth\" OR \"bad loans\" ): HTTP 429",
+  "GDELT theme failed (\"auto sales\" India OR \"vehicle sales\" In): fetch failed",
+  "GDELT theme failed (\"steel prices\" OR \"semiconductor shortag): HTTP 429",
+  "GDELT theme failed (\"capex cycle\" India OR \"infrastructure s): HTTP 429",
+  "GDELT theme failed (\"spectrum auction\" India OR \"telecom tar): GDELT: Queries containing OR'd terms must be surrounded by ().",
+  "GDELT theme failed (\"crude oil\" (price OR OPEC)): HTTP 429",
+  "GDELT theme failed (\"refining margins\" OR \"petrochemical pri): HTTP 429",
+  "GDELT theme failed (\"windfall tax\" India OR \"fuel price\" Ind): fetch failed",
+  "GDELT theme failed (\"cement prices\" India OR \"infrastructure): GDELT: Queries containing OR'd terms must be surrounded by ().",
+  "GDELT theme failed (\"IT spending\" OR \"tech spending\" (US OR ): HTTP 429",
+  "GDELT theme failed (\"H-1B\" OR \"visa fees\" OR \"outsourcing\" p): fetch failed",
+  "GDELT theme failed (\"generative AI\" (services OR outsourcing): HTTP 429",
+  "GDELT theme failed (\"palm oil\" OR \"commodity prices\" FMCG): HTTP 429",
+  "GDELT theme failed (\"rural demand\" India OR monsoon India): GDELT: Queries containing OR'd terms must be surrounded by ().",
+  "GDELT theme failed (\"infrastructure spending\" India OR \"orde): GDELT: Queries containing OR'd terms must be surrounded by ().",
+  "GDELT theme failed (\"coal prices\" OR \"power demand\" India): GDELT: Queries containing OR'd terms must be surrounded by ().",
+  "GDELT theme failed (\"renewable energy\" India (auction OR tar): HTTP 429",
+  "GDELT theme failed (\"Indian rupee\" (dollar OR forex)): HTTP 429",
+  "GDELT theme failed (\"foreign investors\" India (stocks OR equ): fetch failed",
+  "News: 3 GDELT queries ok, 29 failed; 154 items assigned",
   "Fundamentals refreshed for 0 companies",
-  "ADANIENT: short=HOLD, swing=HOLD, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 59 news | Google Gemini",
-  "ADANIPORTS: short=STRONG BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 31 | 28 news | Google Gemini",
+  "ADANIENT: short=HOLD, swing=HOLD, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 59 news | deterministic template",
+  "ADANIPORTS: short=STRONG BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 31 | 28 news | deterministic template",
   "APOLLOHOSP: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
-  "ASIANPAINT: short=STRONG BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 31 | 28 news | Google Gemini",
-  "AXISBANK: short=STRONG BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
-  "BAJAJ-AUTO: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 31 | 48 news | Google Gemini",
+  "ASIANPAINT: short=STRONG BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 31 | 28 news | deterministic template",
+  "AXISBANK: short=STRONG BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | deterministic template",
+  "BAJAJ-AUTO: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 31 | 49 news | Google Gemini",
   "BAJAJFINSV: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
   "BAJFINANCE: short=STRONG BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | deterministic template",
   "BEL: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
   "BHARTIARTL: short=STRONG BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 31 | 60 news | Google Gemini",
   "BSE: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
   "CIPLA: short=STRONG BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 31 news | Google Gemini",
-  "COALINDIA: short=HOLD, swing=HOLD, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 43 news | Google Gemini",
+  "COALINDIA: short=HOLD, swing=HOLD, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 43 news | deterministic template",
   "DRREDDY: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 31 news | Google Gemini",
-  "EICHERMOT: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
-  "ETERNAL: short=STRONG BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 31 | 28 news | Google Gemini",
-  "GRASIM: short=HOLD, swing=HOLD, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 31 | 33 news | Google Gemini",
-  "HCLTECH: short=STRONG BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 31 | 60 news | Google Gemini",
-  "HDFCBANK: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
-  "HDFCLIFE: short=HOLD, swing=HOLD, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
+  "EICHERMOT: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | deterministic template",
+  "ETERNAL: short=STRONG BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 31 | 28 news | deterministic template",
+  "GRASIM: short=HOLD, swing=HOLD, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 31 | 33 news | deterministic template",
+  "HCLTECH: short=STRONG BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 31 | 60 news | deterministic template",
+  "HDFCBANK: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | deterministic template",
+  "HDFCLIFE: short=HOLD, swing=HOLD, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | deterministic template",
   "HINDALCO: short=HOLD, swing=HOLD, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 31 | 42 news | Google Gemini",
-  "HINDUNILVR: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | deterministic template",
-  "ICICIBANK: short=STRONG BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
-  "INDIGO: short=STRONG BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 31 | 54 news | deterministic template",
-  "INFY: short=HOLD, swing=HOLD, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 31 | 60 news | Google Gemini",
+  "HINDUNILVR: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
+  "ICICIBANK: short=STRONG BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | deterministic template",
+  "INDIGO: short=STRONG BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 31 | 54 news | Google Gemini",
+  "INFY: short=HOLD, swing=HOLD, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 31 | 60 news | deterministic template",
   "ITC: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
-  "JIOFIN: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
-  "JSWSTEEL: short=STRONG BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
-  "KOTAKBANK: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
-  "LT: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 31 | 28 news | Google Gemini",
-  "M&M: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
-  "MARUTI: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
-  "MAXHEALTH: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
-  "NESTLEIND: short=HOLD, swing=HOLD, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
-  "NTPC: short=HOLD, swing=HOLD, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
-  "ONGC: short=SELL, swing=SELL, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
-  "POWERGRID: short=HOLD, swing=HOLD, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 31 | 50 news | Google Gemini",
-  "RELIANCE: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
-  "SBILIFE: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
-  "SBIN: short=HOLD, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
-  "SHRIRAMFIN: short=HOLD, swing=HOLD, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | Google Gemini",
-  "SUNPHARMA: short=STRONG BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 31 news | Google Gemini",
-  "TATACONSUM: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 39 news | Google Gemini",
-  "TATASTEEL: short=HOLD, swing=HOLD, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 31 | 42 news | Google Gemini",
-  "Time budget reached — TCS and later stocks keep their previous report until the next run",
-  "NSE feeds: announcements: Online_announcements.xml (969 items); financialResults: Financial_Results.xml (3 items); boardMeetings: Board_Meetings.xml (7 items); corporateActions: Corporate_action.xml (39 items); annualReports: Annual_Reports.xml (20 items)"
+  "JIOFIN: short=BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | deterministic template",
+  "JSWSTEEL: short=STRONG BUY, swing=BUY, medium=INSUFFICIENT DATA, long=INSUFFICIENT DATA | conf 41 | 60 news | deterministic template",
+  "Time budget reached — KOTAKBANK and later stocks keep their previous report until the next run",
+  "NSE feeds: announcements: Online_announcements.xml (1250 items); financialResults: Financial_Results.xml (3 items); boardMeetings: Board_Meetings.xml (10 items); corporateActions: Corporate_action.xml (39 items); annualReports: Annual_Reports.xml (20 items)"
  ],
- "minutes": 70.29
+ "minutes": 70.07
 }
