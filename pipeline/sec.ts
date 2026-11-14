@@ -43,7 +43,7 @@ export async function refreshSecFundamentals(symbol: string, log: (s: string) =>
   const file = dataPath("fundamentals", `${symbol}.json`);
   const cur = await readJson<FinancialsBundle | null>(file, null);
   if (cur && cur.source.startsWith("SEC EDGAR") && Date.now() - new Date(cur.retrievedAt).getTime() < 7 * 86400000) return false;
-  const r = await fetchSource<Facts>(`https://data.sec.gov/api/xbrl/companyfacts/CIK${f.cik}.json`, { source: "sec", headers: { "User-Agent": "StockPilot personal research kundan4789@users.noreply.github.com", Accept: "application/json" } });
+  const r = await fetchSource<Facts>(`https://data.sec.gov/api/xbrl/companyfacts/CIK${f.cik}.json`, { source: "sec", headers: { "User-Agent": process.env.SEC_USER_AGENT || "StockPilot personal research kundan4789@users.noreply.github.com", Accept: "application/json", "Accept-Encoding": "gzip, deflate" } });
   const rev = annual(r.data, ["Revenue", "RevenueFromContractsWithCustomers", "InterestRevenueCalculatedUsingEffectiveInterestMethod", "Revenues"]);
   const np = annual(r.data, ["ProfitLossAttributableToOwnersOfParent", "ProfitLoss", "NetIncomeLoss"]);
   const eps = annual(r.data, ["BasicEarningsLossPerShare", "EarningsPerShareBasic"]);

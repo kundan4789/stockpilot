@@ -40,6 +40,7 @@ jobs:
           GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
           GNEWS_API_KEY: ${{ secrets.GNEWS_API_KEY }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
           GEMINI_SEARCH_MODEL: ${{ vars.GEMINI_SEARCH_MODEL }}
           MAX_MINUTES: "70"
         timeout-minutes: 80
